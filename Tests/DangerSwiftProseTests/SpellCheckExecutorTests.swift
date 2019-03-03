@@ -1,32 +1,75 @@
-//
-//  SpellCheckExecutorTests.swift
-//  DangerSwiftProseTests
-//
-//  Created by Franco Meloni on 03/03/2019.
-//
-
 import XCTest
+@testable import DangerSwiftProse
+import Nimble
+import TestSpy
 
-class SpellCheckExecutorTests: XCTestCase {
-
+final class SpellCheckExecutorTests: XCTestCase {
+    private var checkExecutor: SpellCheckExecutor!
+    private var finder: MockedMdspellFinder!
+    private var commandExecutor: MockedCommandExecutor!
+    
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        checkExecutor = SpellCheckExecutor()
+        finder = MockedMdspellFinder()
+        commandExecutor = MockedCommandExecutor()
     }
-
+    
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        checkExecutor = nil
+        finder = nil
+        super.tearDown()
     }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testItExecutesTheCorrectCommand() throws {
+        let result = try checkExecutor.executeProse(onFiles: [
+            "file1",
+            "file2",
+            "file3"
+            ], ignoredWords: [
+                "word1",
+                "word2",
+                "word3"
+            ],
+            language: "en-us",
+            mdspellFinder: finder,
+            commandExecutor: commandExecutor
+        )
+        
+        expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file1 -r -a -n --en-us")))
+        expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file2 -r -a -n --en-us")))
+        expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file3 -r -a -n --en-us")))
+        expect(result) == [
+            "result",
+            "result",
+            "result"
+        ]
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testReturnsAnErrorIfMdspellIsNotInstalled() {
+        finder.result = nil
+        
+        expect(try self.checkExecutor.executeProse(onFiles: [
+            "file1",
+            "file2",
+            "file3"
+            ], ignoredWords: [
+                "word1",
+                "word2",
+                "word3"
+            ],
+            language: "en-us",
+            mdspellFinder: self.finder
+        )).to(throwError(closure: { error in
+            expect(error.localizedDescription) == "mdspell is not installed"
+        }))
     }
+}
 
+private final class MockedMdspellFinder: MdspellFinding {
+    var result: String? = "/usr/bin/mdspell"
+    
+    func findMdspell(commandExecutor: CommandExecuting) -> String? {
+        return result
+    }
 }

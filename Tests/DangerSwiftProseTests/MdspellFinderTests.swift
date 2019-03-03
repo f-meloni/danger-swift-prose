@@ -8,14 +8,12 @@ final class MdspellFinderTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
         mdSpellFinder = MdSpellFinder()
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         mdSpellFinder = nil
+        super.tearDown()
     }
     
     func testItReturnsTheCorrectPath() {
@@ -36,30 +34,5 @@ final class MdspellFinderTests: XCTestCase {
         
         expect(executor).to(haveReceived(.execute("which mdspell")))
         expect(result).to(beNil())
-    }
-}
-
-private final class MockedCommandExecutor: CommandExecuting, TestSpy {
-    enum CommandError: Error {
-        case error
-    }
-    
-    enum Method: Equatable {
-        case execute(String)
-    }
-    
-    var callstack = CallstackContainer<Method>()
-    
-    var success = true
-    let result = "result"
-    
-    func execute(command: String) throws -> String {
-        callstack.record(.execute(command))
-        
-        if success {
-            return result
-        } else {
-            throw CommandError.error
-        }
     }
 }
