@@ -3,22 +3,22 @@ import Nimble
 import TestSpy
 @testable import DangerSwiftProse
 
-final class ProseFinderTests: XCTestCase {
-    var proseFinder: ProseFinder!
+final class MdspellFinderTests: XCTestCase {
+    var mdSpellFinder: MdSpellFinder!
     
     override func setUp() {
         super.setUp()
         
-        proseFinder = ProseFinder()
+        mdSpellFinder = MdSpellFinder()
     }
     
     func testItReturnsTheCorrectPath() {
         let executor = MockedCommandExecutor()
         executor.success = true
         
-        let result = proseFinder.findProse(commandExecutor: executor)
+        let result = mdSpellFinder.findMdspell(commandExecutor: executor)
         
-        expect(executor).to(haveReceived(.execute("which proselint")))
+        expect(executor).to(haveReceived(.execute("which mdspell")))
         expect(result) == executor.result
     }
     
@@ -26,9 +26,9 @@ final class ProseFinderTests: XCTestCase {
         let executor = MockedCommandExecutor()
         executor.success = false
         
-        let result = proseFinder.findProse(commandExecutor: executor)
+        let result = mdSpellFinder.findMdspell(commandExecutor: executor)
         
-        expect(executor).to(haveReceived(.execute("which proselint")))
+        expect(executor).to(haveReceived(.execute("which mdspell")))
         expect(result).to(beNil())
     }
 }
