@@ -11,7 +11,7 @@ struct SpellCheckExecutor {
         }
     }
     
-    func executeProse(onFiles files: [String],
+    func executeSpellCheck(onFiles files: [String],
                       ignoredWords: [String],
                       language: String,
                       mdspellFinder: MdspellFinding = MdSpellFinder(),

@@ -22,19 +22,7 @@ final class SpellCheckExecutorTests: XCTestCase {
     }
     
     func testItExecutesTheCorrectCommand() throws {
-        let result = try checkExecutor.executeProse(onFiles: [
-            "file1",
-            "file2",
-            "file3"
-            ], ignoredWords: [
-                "word1",
-                "word2",
-                "word3"
-            ],
-            language: "en-us",
-            mdspellFinder: finder,
-            commandExecutor: commandExecutor
-        )
+        let result = try executeProse()
         
         expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file1 -r -a -n --en-us")))
         expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file2 -r -a -n --en-us")))
@@ -49,7 +37,18 @@ final class SpellCheckExecutorTests: XCTestCase {
     func testReturnsAnErrorIfMdspellIsNotInstalled() {
         finder.result = nil
         
-        expect(try self.checkExecutor.executeProse(onFiles: [
+        expect(try self.executeProse()).to(throwError(closure: { error in
+            expect(error.localizedDescription) == "mdspell is not installed"
+        }))
+    }
+    
+    func testDeletesTheSpellingCheckFile() throws {
+        _ = try executeProse()
+        expect(FileManager.default.fileExists(atPath: self.checkExecutor.spellingFile)) == false
+    }
+    
+    private func executeProse() throws -> [String] {
+        return try checkExecutor.executeSpellCheck(onFiles: [
             "file1",
             "file2",
             "file3"
@@ -58,11 +57,10 @@ final class SpellCheckExecutorTests: XCTestCase {
                 "word2",
                 "word3"
             ],
-            language: "en-us",
-            mdspellFinder: self.finder
-        )).to(throwError(closure: { error in
-            expect(error.localizedDescription) == "mdspell is not installed"
-        }))
+               language: "en-us",
+               mdspellFinder: finder,
+               commandExecutor: commandExecutor
+        )
     }
 }
 
