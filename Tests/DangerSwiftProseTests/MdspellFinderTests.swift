@@ -12,6 +12,12 @@ final class MdspellFinderTests: XCTestCase {
         mdSpellFinder = MdSpellFinder()
     }
     
+    override func tearDown() {
+        super.tearDown()
+        
+        mdSpellFinder = nil
+    }
+    
     func testItReturnsTheCorrectPath() {
         let executor = MockedCommandExecutor()
         executor.success = true
