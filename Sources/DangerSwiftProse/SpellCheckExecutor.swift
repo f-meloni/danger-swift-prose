@@ -1,5 +1,10 @@
 import XCTest
 
+struct SpellCheckResult: Equatable {
+    let file: String
+    let checkResult: String
+}
+
 struct SpellCheckExecutor {
     let spellingFile = ".spelling"
     
@@ -15,7 +20,7 @@ struct SpellCheckExecutor {
                       ignoredWords: [String],
                       language: String,
                       mdspellFinder: MdspellFinding = MdSpellFinder(),
-                      commandExecutor: CommandExecuting = CommandExecutor()) throws -> [String] {
+                      commandExecutor: CommandExecuting = CommandExecutor()) throws -> [SpellCheckResult] {
         guard let mdspellPath = mdspellFinder.findMdspell(commandExecutor: commandExecutor),
             mdspellPath.count > 0 else {
             throw Errors.mdspellNotFound
@@ -31,7 +36,10 @@ struct SpellCheckExecutor {
             try? FileManager.default.removeItem(atPath: spellingFile)
         }
         
-        let result = try files.map { try commandExecutor.execute(command: mdspellPath + " \($0) " + arguments.joined(separator: " ")) }
+        let result = try files.map { file -> SpellCheckResult in
+            let checkContent = try commandExecutor.execute(command: mdspellPath + " \(file) " + arguments.joined(separator: " "))
+            return SpellCheckResult(file: file, checkResult: checkContent)
+        }
         
         return result
     }
