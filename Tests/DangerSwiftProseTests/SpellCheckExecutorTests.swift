@@ -49,17 +49,17 @@ final class SpellCheckExecutorTests: XCTestCase {
     
     private func executeProse() throws -> [String] {
         return try checkExecutor.executeSpellCheck(onFiles: [
-            "file1",
-            "file2",
-            "file3"
+                "file1",
+                "file2",
+                "file3"
             ], ignoredWords: [
                 "word1",
                 "word2",
                 "word3"
             ],
-               language: "en-us",
-               mdspellFinder: finder,
-               commandExecutor: commandExecutor
+            language: "en-us",
+            mdspellFinder: finder,
+            commandExecutor: commandExecutor
         )
     }
 }

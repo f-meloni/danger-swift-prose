@@ -28,7 +28,7 @@ struct SpellCheckExecutor {
         
         try ignoredWords.joined(separator: "\n").write(toFile: spellingFile, atomically: true, encoding: .utf8)
         defer {
-            try?  FileManager.default.removeItem(atPath: spellingFile)
+            try? FileManager.default.removeItem(atPath: spellingFile)
         }
         
         let result = try files.map { try commandExecutor.execute(command: mdspellPath + " \($0) " + arguments.joined(separator: " ")) }
