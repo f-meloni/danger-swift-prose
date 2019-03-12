@@ -10,6 +10,9 @@ let package = Package(
         .library(
             name: "DangerSwiftProse",
             targets: ["DangerSwiftProse"]),
+        .library(name: "DangerDeps",
+                 type: .dynamic,
+                 targets: ["DangerSwiftProse"])
     ],
     dependencies: [
         .package(url: "https://github.com/danger/swift.git", from: "1.0.0"),
@@ -24,6 +27,6 @@ let package = Package(
             dependencies: ["Danger"]),
         .testTarget(
             name: "DangerSwiftProseTests",
-            dependencies: ["DangerSwiftProse", "Nimble", "TestSpy"]),
+            dependencies: ["DangerSwiftProse", "Nimble", "TestSpy", "DangerFixtures"]),
     ]
 )

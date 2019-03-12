@@ -4,13 +4,13 @@ import Nimble
 import TestSpy
 
 final class SpellCheckExecutorTests: XCTestCase {
-    private var checkExecutor: SpellCheckExecutor!
+    private var checkExecutor: MdspellCheckExecutor!
     private var finder: MockedMdspellFinder!
     private var commandExecutor: MockedCommandExecutor!
     
     override func setUp() {
         super.setUp()
-        checkExecutor = SpellCheckExecutor()
+        checkExecutor = MdspellCheckExecutor()
         finder = MockedMdspellFinder()
         commandExecutor = MockedCommandExecutor()
     }
@@ -28,9 +28,9 @@ final class SpellCheckExecutorTests: XCTestCase {
         expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file2 -r -a -n --en-us")))
         expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file3 -r -a -n --en-us")))
         expect(result) == [
-            SpellCheckResult(file: "file1", checkResult: "result"),
-            SpellCheckResult(file: "file2", checkResult: "result"),
-            SpellCheckResult(file: "file3", checkResult: "result")
+            MdspellCheckResult(file: "file1", checkResult: "result"),
+            MdspellCheckResult(file: "file2", checkResult: "result"),
+            MdspellCheckResult(file: "file3", checkResult: "result")
         ]
     }
     
@@ -47,7 +47,7 @@ final class SpellCheckExecutorTests: XCTestCase {
         expect(FileManager.default.fileExists(atPath: self.checkExecutor.spellingFile)) == false
     }
     
-    private func executeSpellCheck() throws -> [SpellCheckResult] {
+    private func executeSpellCheck() throws -> [MdspellCheckResult] {
         return try checkExecutor.executeSpellCheck(onFiles: [
                 "file1",
                 "file2",

@@ -1,11 +1,12 @@
-import XCTest
+import Foundation
 
-struct SpellCheckResult: Equatable {
-    let file: String
-    let checkResult: String
+protocol MdspellCheckExecuting {
+    func executeSpellCheck(onFiles files: [String],
+        ignoredWords: [String],
+        language: String) throws -> [MdspellCheckResult]
 }
 
-struct SpellCheckExecutor {
+struct MdspellCheckExecutor: MdspellCheckExecuting {
     let spellingFile = ".spelling"
     
     enum Errors: Error, LocalizedError {
@@ -17,10 +18,20 @@ struct SpellCheckExecutor {
     }
     
     func executeSpellCheck(onFiles files: [String],
+                           ignoredWords: [String],
+                           language: String) throws -> [MdspellCheckResult] {
+        return try executeSpellCheck(onFiles: files,
+                          ignoredWords: ignoredWords,
+                          language: language,
+                          mdspellFinder: MdSpellFinder(),
+                          commandExecutor: CommandExecutor())
+    }
+    
+    func executeSpellCheck(onFiles files: [String],
                       ignoredWords: [String],
                       language: String,
-                      mdspellFinder: MdspellFinding = MdSpellFinder(),
-                      commandExecutor: CommandExecuting = CommandExecutor()) throws -> [SpellCheckResult] {
+                      mdspellFinder: MdspellFinding,
+                      commandExecutor: CommandExecuting) throws -> [MdspellCheckResult] {
         guard let mdspellPath = mdspellFinder.findMdspell(commandExecutor: commandExecutor),
             mdspellPath.count > 0 else {
             throw Errors.mdspellNotFound
@@ -36,9 +47,9 @@ struct SpellCheckExecutor {
             try? FileManager.default.removeItem(atPath: spellingFile)
         }
         
-        let result = try files.map { file -> SpellCheckResult in
+        let result = try files.map { file -> MdspellCheckResult in
             let checkContent = try commandExecutor.execute(command: mdspellPath + " \(file) " + arguments.joined(separator: " "))
-            return SpellCheckResult(file: file, checkResult: checkContent)
+            return MdspellCheckResult(file: file, checkResult: checkContent)
         }
         
         return result

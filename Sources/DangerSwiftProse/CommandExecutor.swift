@@ -5,8 +5,15 @@ protocol CommandExecuting {
 }
 
 struct CommandExecutor: CommandExecuting {
-    public enum CommandError: Error {
-        case commandFailed(exitCode: Int32)
+    public enum CommandError: Error, LocalizedError {
+        case commandFailed(command: String, exitCode: Int32)
+        
+        public var errorDescription: String? {
+            switch self {
+            case let .commandFailed(command, code):
+                return "\(command) exited with code: \(code)"
+            }
+        }
     }
     
     func execute(command: String) throws -> String {
@@ -20,10 +27,6 @@ struct CommandExecutor: CommandExecuting {
         task.standardOutput = pipe
         task.launch()
         task.waitUntilExit()
-        
-        guard task.terminationStatus == 0 else {
-            throw CommandError.commandFailed(exitCode: task.terminationStatus)
-        }
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         return String(data: data, encoding: String.Encoding.utf8)!
