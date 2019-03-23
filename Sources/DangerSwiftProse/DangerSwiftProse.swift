@@ -24,8 +24,11 @@ public enum MdspellCheck {
                                                                                ignoredWords: ignoredWords,
                                                                                language: language)
             
+            print(spellCheckResults)
             
             let markdown = spellCheckResults.toMarkdown()
+            
+            print(markdown)
             
             if markdown.count > 0 {
                 dsl.markdown(markdown)
