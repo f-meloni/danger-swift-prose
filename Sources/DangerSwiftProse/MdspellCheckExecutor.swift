@@ -48,7 +48,6 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
         
         let result = try files.map { file -> MdspellCheckResult in
             let checkContent = try commandExecutor.execute(command: "mdspell \(file) " + arguments.joined(separator: " "))
-            print(checkContent)
             return MdspellCheckResult(file: file, checkResult: checkContent)
         }
         
