@@ -32,8 +32,7 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
                       language: String,
                       mdspellFinder: MdspellFinding,
                       commandExecutor: CommandExecuting) throws -> [MdspellCheckResult] {
-        guard let mdspellPath = mdspellFinder.findMdspell(commandExecutor: commandExecutor),
-            mdspellPath.count > 0 else {
+        guard mdspellFinder.findMdspell(commandExecutor: commandExecutor)?.count ?? 0 > 0 else {
             throw Errors.mdspellNotFound
         }
         
@@ -48,7 +47,7 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
         }
         
         let result = try files.map { file -> MdspellCheckResult in
-            let checkContent = try commandExecutor.execute(command: mdspellPath + " \(file) " + arguments.joined(separator: " "))
+            let checkContent = try commandExecutor.execute(command: "mdspell \(file) " + arguments.joined(separator: " "))
             return MdspellCheckResult(file: file, checkResult: checkContent)
         }
         
