@@ -17,7 +17,13 @@ public enum MdspellCheck {
                                   language: String,
                                   mdspellCheckExecutor: MdspellCheckExecuting,
                                   dsl: DangerDSL) {
-        let spellCheckFiles = files ?? dsl.git.createdFiles + dsl.git.modifiedFiles
+        let spellCheckFiles: [String]
+        
+        if let files = files {
+            spellCheckFiles = files
+        } else {
+            spellCheckFiles = (dsl.git.createdFiles + dsl.git.modifiedFiles).filter { $0.fileType == .markdown }
+        }
         
         do {
             let spellCheckResults = try mdspellCheckExecutor.executeSpellCheck(onFiles: spellCheckFiles,
