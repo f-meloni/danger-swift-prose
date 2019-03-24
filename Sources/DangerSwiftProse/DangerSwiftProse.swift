@@ -30,8 +30,6 @@ public enum MdspellCheck {
                                                                                ignoredWords: ignoredWords,
                                                                                language: language)
             
-            dsl.message(String(describing: spellCheckResults))
-            
             let markdown = spellCheckResults.toMarkdown()
             
             if markdown.count > 0 {

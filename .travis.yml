@@ -29,6 +29,3 @@ matrix:
       script:
         - swift test
         - DEBUG="*" swift run danger-swift ci
-        - pwd
-        - ls -la
-        - cat README.md
