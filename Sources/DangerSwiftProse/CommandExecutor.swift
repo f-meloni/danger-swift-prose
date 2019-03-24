@@ -17,6 +17,8 @@ struct CommandExecutor: CommandExecuting {
     }
     
     func execute(command: String) throws -> String {
+        print("COMMAND: \(command)")
+        
         var env = ProcessInfo.processInfo.environment
         let task = Process()
         task.launchPath = env["SHELL"]
