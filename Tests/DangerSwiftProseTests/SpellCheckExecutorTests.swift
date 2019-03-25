@@ -24,9 +24,9 @@ final class SpellCheckExecutorTests: XCTestCase {
     func testItExecutesTheCorrectCommand() throws {
         let result = try executeSpellCheck()
         
-        expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file1 -r -a -n --en-us")))
-        expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file2 -r -a -n --en-us")))
-        expect(self.commandExecutor).to(haveReceived(.execute("/usr/bin/mdspell file3 -r -a -n --en-us")))
+        expect(self.commandExecutor).to(haveReceived(.execute("mdspell file1 -r -a -n --en-us")))
+        expect(self.commandExecutor).to(haveReceived(.execute("mdspell file2 -r -a -n --en-us")))
+        expect(self.commandExecutor).to(haveReceived(.execute("mdspell file3 -r -a -n --en-us")))
         expect(result) == [
             MdspellCheckResult(file: "file1", checkResult: "result"),
             MdspellCheckResult(file: "file2", checkResult: "result"),
