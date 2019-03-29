@@ -52,6 +52,7 @@ extension Array where Element == MdspellCheckViolation {
     func toMarkdown() -> String {
         return self.reduce("""
             | Line | Typo |\n
+            | ---- | ---- |
             """) { (result, violation) in
                 return result + "| \(violation.line) | \(violation.typo) |\n"
         }
