@@ -22,10 +22,10 @@ final class MdspellTests: XCTestCase {
         let spellCheckExecutor = MockedMdspellCheckExecutor()
         let dsl = githubFixtureDSL
         
-        try readme1Content.write(toFile: "README.md", atomically: true, encoding: .utf8)
+        try readme1Content.write(toFile: "README1.md", atomically: true, encoding: .utf8)
         try "# DangerSwiftProse".write(toFile: "README2.md", atomically: true, encoding: .utf8)
         
-        createdFiles.append("README.md")
+        createdFiles.append("README1.md")
         createdFiles.append("README2.md")
         
         MdspellCheck.performSpellCheck(files: ["file"],
@@ -37,8 +37,9 @@ final class MdspellTests: XCTestCase {
         expect(spellCheckExecutor).to(haveReceived(.executeSpellCheck(files: ["file"], ignoredWords: ["word"], language: "en-us")))
         expect(dsl.markdowns.map { $0.message }) == [
             """
-            ### Mdspell report on README.md:
+            ### Mdspell report on README1.md:
             | Line | Typo |
+            | ---- | ---- |
             | 6 | Dangerfiles |
             | 12 | v0.4.1 |
             | 13 | v0.3.6 |
@@ -61,6 +62,7 @@ final class MdspellTests: XCTestCase {
 
             ### Mdspell report on README2.md:
             | Line | Typo |
+            | ---- | ---- |
             | 1 | DangerSwiftProse |
             \n
             """
@@ -111,9 +113,9 @@ final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
     
     private var result: [MdspellCheckResult] {
         return [
-            MdspellCheckResult(file: "README.md", checkResult:
+            MdspellCheckResult(file: "README1.md", checkResult:
                 """
-                    README.md
+                    README1.md
                         6:176 | Write your Dangerfiles in Swift.
                         12:285 | f you are using Swift 4.1 use v0.4.1
                         13:326 |  you are using Swift 4.0, Use v0.3.6
@@ -138,7 +140,7 @@ final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
                 """),
             MdspellCheckResult(file: "README2.md", checkResult:
                 """
-                    other/README.md
+                    other/README2.md
                         1:2 | # DangerSwiftProse
 
                 >> 1 spelling error found in 1 file
