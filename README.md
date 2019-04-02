@@ -54,3 +54,11 @@ Coverage.xcodeBuildCoverage(.derivedDataFolder("Build"),
 ```
 
 - (Recommended) Cache the `~/.danger-swift` folder
+
+### Use Mdspell
+
+Add to your Dangerfile
+
+```
+MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
+```
