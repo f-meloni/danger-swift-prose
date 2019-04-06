@@ -10,7 +10,7 @@ cache:
 matrix:
   include:
     - os: osx
-      osx_image: xcode10.2
+      osx_image: xcode10
       install:
         - npm install -g danger
       script:
@@ -22,7 +22,7 @@ matrix:
       dist: trusty
       install:
         - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        - swiftenv global 4.2.4
+        - swiftenv global 4.2
         - npm install -g danger
       script:
         - ls -la
