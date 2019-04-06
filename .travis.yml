@@ -10,7 +10,7 @@ cache:
 matrix:
   include:
     - os: osx
-      osx_image: xcode10
+      osx_image: xcode10.2
       install:
         - npm install -g danger
       script:
