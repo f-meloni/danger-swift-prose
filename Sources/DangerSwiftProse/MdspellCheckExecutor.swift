@@ -31,11 +31,20 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
                       ignoredWords: [String],
                       language: String,
                       mdspellFinder: MdspellFinding,
-                      commandExecutor: CommandExecuting) throws -> [MdspellCheckResult] {
-        guard let mdspellPath = mdspellFinder.findMdspell(commandExecutor: commandExecutor),
-            mdspellPath.count > 0 else {
-            throw Errors.mdspellNotFound
+                      commandExecutor: CommandExecuting,
+                      mdspellInstaller: MdspellInstalling = MdspellInstaller()) throws -> [MdspellCheckResult] {
+        var mdspellPath: String! = mdspellFinder.findMdspell(commandExecutor: commandExecutor)
+        
+        if mdspellPath == nil || mdspellPath.isEmpty {
+            try mdspellInstaller.installMdspell(executor: commandExecutor)
+            mdspellPath = mdspellFinder.findMdspell(commandExecutor: commandExecutor)
+            
+            if mdspellPath == nil || mdspellPath.isEmpty {
+                throw Errors.mdspellNotFound
+            }
         }
+        
+        
         
         var arguments: [String] = ["-r"]
         arguments.append("-a") // ignore acronyms
@@ -47,8 +56,8 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
             try? FileManager.default.removeItem(atPath: spellingFile)
         }
         
-        let result = try files.map { file -> MdspellCheckResult in
-            let checkContent = try commandExecutor.execute(command: mdspellPath + " \(file) " + arguments.joined(separator: " "))
+        let result = files.map { file -> MdspellCheckResult in
+        let checkContent = commandExecutor.execute(command: mdspellPath + " \(file) " + arguments.joined(separator: " "))
             return MdspellCheckResult(file: file, checkResult: checkContent)
         }
         
