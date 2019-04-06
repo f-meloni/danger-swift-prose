@@ -4,6 +4,6 @@ protocol MdspellFinding {
 
 struct MdSpellFinder: MdspellFinding {
     func findMdspell(commandExecutor: CommandExecuting) -> String? {
-        return try? commandExecutor.execute(command: "which mdspell")
+        return try? commandExecutor.spawn(command: "which mdspell")
     }
 }

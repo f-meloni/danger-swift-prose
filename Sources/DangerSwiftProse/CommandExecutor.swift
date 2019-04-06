@@ -1,10 +1,17 @@
 import Foundation
+import Danger
 
 protocol CommandExecuting {
-    func execute(command: String) throws -> String
+    @discardableResult
+    func execute(command: String) -> String
+    
+    @discardableResult
+    func spawn(command: String) throws -> String
 }
 
 struct CommandExecutor: CommandExecuting {
+    let danger = Danger()
+    
     public enum CommandError: Error, LocalizedError {
         case commandFailed(command: String, exitCode: Int32)
         
@@ -16,19 +23,13 @@ struct CommandExecutor: CommandExecuting {
         }
     }
     
-    func execute(command: String) throws -> String {
-        var env = ProcessInfo.processInfo.environment
-        let task = Process()
-        task.launchPath = env["SHELL"]
-        task.arguments = ["-l", "-c", command]
-        task.currentDirectoryPath = FileManager.default.currentDirectoryPath
-        
-        let pipe = Pipe()
-        task.standardOutput = pipe
-        task.launch()
-        task.waitUntilExit()
-        
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(data: data, encoding: String.Encoding.utf8)!
+    @discardableResult
+    func execute(command: String) -> String {
+        return danger.utils.exec(command)
+    }
+    
+    @discardableResult
+    func spawn(command: String) throws -> String {
+        return try danger.utils.spawn(command)
     }
 }
