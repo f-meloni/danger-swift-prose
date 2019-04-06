@@ -3,7 +3,7 @@ import XCTest
 import Nimble
 import TestSpy
 
-final class SpellCheckExecutorTests: XCTestCase {
+final class MdspellCheckExecutorTests: XCTestCase {
     private var checkExecutor: MdspellCheckExecutor!
     private var finder: MockedMdspellFinder!
     private var commandExecutor: MockedCommandExecutor!
