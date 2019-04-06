@@ -1,5 +1,3 @@
-import Cocoa
-
 protocol MdspellInstalling {
     func installMdspell(executor: CommandExecuting) throws
 }
