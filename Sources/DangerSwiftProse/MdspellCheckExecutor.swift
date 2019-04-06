@@ -33,13 +33,10 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
                       mdspellFinder: MdspellFinding,
                       commandExecutor: CommandExecuting,
                       mdspellInstaller: MdspellInstalling = MdspellInstaller()) throws -> [MdspellCheckResult] {
-        var mdspellPath: String! = mdspellFinder.findMdspell(commandExecutor: commandExecutor)
-        
-        if mdspellPath == nil || mdspellPath.isEmpty {
+        if mdspellFinder.findMdspell(commandExecutor: commandExecutor)?.isEmpty ?? true {
             try mdspellInstaller.installMdspell(executor: commandExecutor)
-            mdspellPath = mdspellFinder.findMdspell(commandExecutor: commandExecutor)
             
-            if mdspellPath == nil || mdspellPath.isEmpty {
+            if mdspellFinder.findMdspell(commandExecutor: commandExecutor)?.isEmpty ?? true {
                 throw Errors.mdspellNotFound
             }
         }
@@ -57,7 +54,7 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
         }
         
         let result = files.map { file -> MdspellCheckResult in
-        let checkContent = commandExecutor.execute(command: mdspellPath + " \(file) " + arguments.joined(separator: " "))
+            let checkContent = commandExecutor.execute(command: "mdspell \(file) " + arguments.joined(separator: " "))
             return MdspellCheckResult(file: file, checkResult: checkContent)
         }
         

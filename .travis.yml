@@ -1,0 +1,33 @@
+language: generic
+
+cache:
+  directories:
+    # General SwiftPM
+    - .build
+    # XCodebuild cache
+    - Build
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10
+      install:
+        - npm install -g danger
+        - npm install -g orta/node-markdown-spellcheck
+      script:
+        - swift test
+        - DEBUG="*" swift run danger-swift ci
+    - os: linux
+      language: generic
+      sudo: required
+      dist: trusty
+      install:
+        - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+        - swiftenv global 4.2
+        - npm install -g danger
+        - npm install -g orta/node-markdown-spellcheck
+      script:
+        - ls -la
+        - swift test
+        - DEBUG="*" swift run danger-swift ci
+        - ls -la
