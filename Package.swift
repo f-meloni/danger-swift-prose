@@ -9,24 +9,49 @@ let package = Package(
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "DangerSwiftProse",
-            targets: ["DangerSwiftProse"]),
+            targets: ["DangerSwiftProse"]
+        ),
         .library(name: "DangerDeps",
                  type: .dynamic,
-                 targets: ["DangerSwiftProse"])
+                 targets: ["DangerSwiftProse"]),
     ],
     dependencies: [
         .package(url: "https://github.com/danger/swift.git", from: "1.0.0"),
         .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"), // dev
         .package(url: "https://github.com/f-meloni/TestSpy", from: "0.3.1"), // dev
+        .package(url: "https://github.com/orta/Komondor", from: "1.0.2"), // dev
+        .package(url: "https://github.com/orta/PackageConfig", .exact("0.0.1")),
+        .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.35.8"), // dev
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "DangerSwiftProse",
-            dependencies: ["Danger"]),
+            dependencies: ["Danger"]
+        ),
         .testTarget(
             name: "DangerSwiftProseTests",
-            dependencies: ["DangerSwiftProse", "Nimble", "TestSpy", "DangerFixtures"]),
+            dependencies: ["DangerSwiftProse", "Nimble", "TestSpy", "DangerFixtures"]
+        ),
     ]
 )
+
+#if canImport(PackageConfig)
+    import PackageConfig
+
+    let config = PackageConfig([
+        "komondor": [
+            "pre-commit": [
+                "swift test --generate-linuxmain",
+                "swift run swiftformat .",
+                "git add .",
+            ],
+        ],
+        "rocket": [
+            "after": [
+                "push",
+            ],
+        ],
+    ])
+#endif

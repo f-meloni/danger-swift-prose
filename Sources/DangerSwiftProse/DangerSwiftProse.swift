@@ -11,27 +11,27 @@ public enum MdspellCheck {
                           mdspellCheckExecutor: MdspellCheckExecutor(),
                           dsl: Danger())
     }
-    
+
     static func performSpellCheck(files: [String]?,
                                   ignoredWords: [String],
                                   language: String,
                                   mdspellCheckExecutor: MdspellCheckExecuting,
                                   dsl: DangerDSL) {
         let spellCheckFiles: [String]
-        
+
         if let files = files {
             spellCheckFiles = files
         } else {
             spellCheckFiles = (dsl.git.createdFiles + dsl.git.modifiedFiles).filter { $0.fileType == .markdown }
         }
-        
+
         do {
             let spellCheckResults = try mdspellCheckExecutor.executeSpellCheck(onFiles: spellCheckFiles,
                                                                                ignoredWords: ignoredWords,
                                                                                language: language)
-            
+
             let markdown = spellCheckResults.toMarkdown()
-            
+
             if markdown.count > 0 {
                 dsl.markdown(markdown)
             }

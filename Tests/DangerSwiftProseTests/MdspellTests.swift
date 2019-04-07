@@ -1,39 +1,39 @@
-import XCTest
-@testable import DangerSwiftProse
-import DangerFixtures
 @testable import Danger
-import TestSpy
+import DangerFixtures
+@testable import DangerSwiftProse
 import Nimble
+import TestSpy
+import XCTest
 
 final class MdspellTests: XCTestCase {
     var createdFiles: [String]!
-    
+
     override func setUp() {
         super.setUp()
         createdFiles = []
     }
-    
+
     override func tearDown() {
         createdFiles?.forEach { try? FileManager.default.removeItem(atPath: $0) }
         super.tearDown()
     }
-    
+
     func testSendsTheCorrectReportToDanger() throws {
         let spellCheckExecutor = MockedMdspellCheckExecutor()
         let dsl = githubFixtureDSL
-        
+
         try readme1Content.write(toFile: "README1.md", atomically: true, encoding: .utf8)
         try "# DangerSwiftProse".write(toFile: "README2.md", atomically: true, encoding: .utf8)
-        
+
         createdFiles.append("README1.md")
         createdFiles.append("README2.md")
-        
+
         MdspellCheck.performSpellCheck(files: ["file"],
                                        ignoredWords: ["word"],
                                        language: "en-us",
                                        mdspellCheckExecutor: spellCheckExecutor,
                                        dsl: dsl)
-        
+
         expect(spellCheckExecutor).to(haveReceived(.executeSpellCheck(files: ["file"], ignoredWords: ["word"], language: "en-us")))
         expect(dsl.markdowns.map { $0.message }) == [
             """
@@ -65,21 +65,21 @@ final class MdspellTests: XCTestCase {
             | ---- | ---- |
             | 1 | DangerSwiftProse |
             \n
-            """
+            """,
         ]
     }
-    
+
     func testItSendsAFailIfTheExecutionFails() {
         let spellCheckExecutor = MockedMdspellCheckExecutor()
         spellCheckExecutor.success = false
         let dsl = githubFixtureDSL
-        
+
         MdspellCheck.performSpellCheck(files: ["file"],
                                        ignoredWords: ["word"],
                                        language: "en-us",
                                        mdspellCheckExecutor: spellCheckExecutor,
                                        dsl: dsl)
-        
+
         expect(dsl.fails.map { $0.message }) == ["test error"]
     }
 }
@@ -87,30 +87,30 @@ final class MdspellTests: XCTestCase {
 final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
     enum Errors: Error, LocalizedError {
         case fakeError
-        
+
         var errorDescription: String? {
             return "test error"
         }
     }
-    
+
     enum Method: Equatable {
         case executeSpellCheck(files: [String], ignoredWords: [String], language: String)
     }
-    
+
     var callstack = CallstackContainer<Method>()
-    
+
     var success = true
-    
+
     func executeSpellCheck(onFiles files: [String], ignoredWords: [String], language: String) throws -> [MdspellCheckResult] {
         callstack.record(.executeSpellCheck(files: files, ignoredWords: ignoredWords, language: language))
-        
+
         if success {
             return result
         } else {
             throw Errors.fakeError
         }
     }
-    
+
     private var result: [MdspellCheckResult] {
         return [
             MdspellCheckResult(file: "README1.md", checkResult:
@@ -144,7 +144,7 @@ final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
                         1:2 | # DangerSwiftProse
 
                 >> 1 spelling error found in 1 file
-                """)
+                """),
         ]
     }
 }

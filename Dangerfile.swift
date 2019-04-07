@@ -1,4 +1,4 @@
-import Danger 
+import Danger
 import DangerSwiftProse
 
 let danger = Danger()
