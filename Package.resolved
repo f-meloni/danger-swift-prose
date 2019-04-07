@@ -101,6 +101,15 @@
         }
       },
       {
+        "package": "Rocket",
+        "repositoryURL": "https://github.com/f-meloni/Rocket",
+        "state": {
+          "branch": null,
+          "revision": "7392ad88d2a3e8074a3c3bfa77f900bed29ba407",
+          "version": "0.8.1"
+        }
+      },
+      {
         "package": "danger-swift",
         "repositoryURL": "https://github.com/danger/swift.git",
         "state": {
@@ -116,6 +125,15 @@
           "branch": null,
           "revision": "5e81f810ef2402574bdb3dee4a5100a139fe8bea",
           "version": "0.40.4"
+        }
+      },
+      {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell",
+        "state": {
+          "branch": null,
+          "revision": "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
+          "version": "4.1.2"
         }
       },
       {
@@ -143,6 +161,15 @@
           "branch": null,
           "revision": "8085c925060b84a1fc0caef444c130da2c8154c3",
           "version": "3.0.1"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams",
+        "state": {
+          "branch": null,
+          "revision": "b08dba4bcea978bf1ad37703a384097d3efce5af",
+          "version": "1.0.2"
         }
       }
     ]
