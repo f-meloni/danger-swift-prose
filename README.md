@@ -55,7 +55,7 @@ Coverage.xcodeBuildCoverage(.derivedDataFolder("Build"),
 
 - (Recommended) Cache the `~/.danger-swift` folder
 
-### Use Mdspell
+### Mdspell
 
 Add to your Dangerfile
 
