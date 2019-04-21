@@ -48,9 +48,7 @@ This prevents the dev dependencies to be downloaded and compiled with your frame
 ```swift
 import DangerSwiftProse // package: https://github.com/f-meloni/DangerSwiftProse
 
-Coverage.xcodeBuildCoverage(.derivedDataFolder("Build"), 
-                            minimumCoverage: 50, 
-                            excludedTargets: ["DangerSwiftProseTests.xctest"])
+MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
 
 - (Recommended) Cache the `~/.danger-swift` folder
