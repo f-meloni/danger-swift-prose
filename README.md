@@ -35,6 +35,8 @@ let package = Package(
 - Add the correct import to your `Dangerfile.swift`:
 ```swift
 import DangerSwiftProse
+
+MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
 
 - Create a folder called `DangerDependencies` on `Sources` with an empty file inside like [Fake.swift](Sources/DangerDependencies/Fake.swift)
