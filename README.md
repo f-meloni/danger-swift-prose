@@ -35,6 +35,8 @@ let package = Package(
 - Add the correct import to your `Dangerfile.swift`:
 ```swift
 import DangerSwiftProse
+
+MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
 
 - Create a folder called `DangerDependencies` on `Sources` with an empty file inside like [Fake.swift](Sources/DangerDependencies/Fake.swift)
@@ -48,14 +50,12 @@ This prevents the dev dependencies to be downloaded and compiled with your frame
 ```swift
 import DangerSwiftProse // package: https://github.com/f-meloni/DangerSwiftProse
 
-Coverage.xcodeBuildCoverage(.derivedDataFolder("Build"), 
-                            minimumCoverage: 50, 
-                            excludedTargets: ["DangerSwiftProseTests.xctest"])
+MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
 
 - (Recommended) Cache the `~/.danger-swift` folder
 
-### Use Mdspell
+### Mdspell
 
 Add to your Dangerfile
 
