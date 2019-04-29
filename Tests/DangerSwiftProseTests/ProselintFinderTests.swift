@@ -10,7 +10,7 @@ final class ProselintFinderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         executor = MockedCommandExecutor()
-        proselintFinder = ProselintFinder()
+        proselintFinder = ProselintFinder(executor: executor)
     }
     
     override func tearDown() {
@@ -21,7 +21,7 @@ final class ProselintFinderTests: XCTestCase {
     
     func testItSendsTheCorrectCallToTheExecutor() throws {
         executor.success = true
-        let result = try proselintFinder.findProselint(executor: executor)
+        let result = try proselintFinder.findProselint()
         
         expect(self.executor).to(haveReceived(.spawn("which proselint")))
         expect(result) == "result"
@@ -30,6 +30,6 @@ final class ProselintFinderTests: XCTestCase {
     func testItThrowsErrorWhenTheExecutorThrowsAnError() throws {
         executor.success = false
         
-        expect(try self.proselintFinder.findProselint(executor: self.executor)).to(throwError(MockedCommandExecutor.CommandError.error))
+        expect(try self.proselintFinder.findProselint()).to(throwError(MockedCommandExecutor.CommandError.error))
     }
 }
