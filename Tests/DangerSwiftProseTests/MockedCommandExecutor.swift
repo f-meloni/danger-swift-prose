@@ -2,7 +2,7 @@
 import TestSpy
 
 final class MockedCommandExecutor: CommandExecuting, TestSpy {
-    enum CommandError: Error {
+    enum CommandError: Error, Equatable {
         case error
     }
 
@@ -14,7 +14,7 @@ final class MockedCommandExecutor: CommandExecuting, TestSpy {
     var callstack = CallstackContainer<Method>()
 
     var success = true
-    let result = "result"
+    var result = "result"
 
     func execute(command: String) -> String {
         callstack.record(.execute(command))
