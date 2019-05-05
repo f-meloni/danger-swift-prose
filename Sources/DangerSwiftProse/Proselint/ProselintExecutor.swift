@@ -27,10 +27,10 @@ struct ProselintExecutor {
         }
 
         return files.compactMap { file -> ProselintResponse? in
-            let result = commandExecutor.execute(command: "\(proselintPath) -j \(file)")
+            let result = try? commandExecutor.spawn(command: "\(proselintPath) -j \(file)")
 
-            guard !result.isEmpty,
-                let data = result.data(using: .utf8) else {
+            guard let data = result?.data(using: .utf8),
+                !data.isEmpty else {
                 return nil
             }
 

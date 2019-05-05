@@ -13,24 +13,23 @@ final class MockedCommandExecutor: CommandExecuting, TestSpy {
 
     var callstack = CallstackContainer<Method>()
 
-    var success = true
     var result = "result"
+
+    lazy var resultBlock: ((String) throws -> String)? = { _ in
+        self.result
+    }
 
     func execute(command: String) -> String {
         callstack.record(.execute(command))
 
-        if success {
-            return result
-        } else {
-            return ""
-        }
+        return (try? resultBlock?(command) ?? "") ?? ""
     }
 
     func spawn(command: String) throws -> String {
         callstack.record(.spawn(command))
 
-        if success {
-            return result
+        if let resultBlock = resultBlock {
+            return try resultBlock(command)
         } else {
             throw CommandError.error
         }

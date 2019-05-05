@@ -20,17 +20,61 @@ final class ProselintExecutorTests: XCTestCase {
         super.tearDown()
     }
 
+    func testSendsCorrectCommandsToCommandExecutor() throws {
+        finder.response = "/bin/proselint"
+        commandExecutor.resultBlock = nil
+
+        _ = try executor.executeProse(files: ["file1", "file2"])
+
+        expect(self.commandExecutor).to(haveReceived(.spawn("/bin/proselint -j file1"), .before(.spawn("/bin/proselint -j file2"))))
+    }
+
     func testThrowsProselintNotFoundErrorWhenProselintFinderThrowsAnError() {
         expect(try self.executor.executeProse(files: [])).to(throwError(closure: {
             expect($0.localizedDescription) == "Proselint is not installed"
         }))
     }
 
-    func testSends() {
+    func testReturnsCorrectResultsWhenProselintCommandIsSuccessful() {
         finder.response = "/bin/proselint"
         commandExecutor.result = proselintJSON
 
         expect(try self.executor.executeProse(files: ["filePath"])) == [
+            ProselintResponse(data:
+                ProselintResponseData(errors: [
+                    ProselintViolation(check: "typography.symbols.curly_quotes",
+                                       column: 34,
+                                       end: 784,
+                                       extent: 2,
+                                       line: 29,
+                                       message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
+                                       replacements: "“ or ”",
+                                       severity: .warning,
+                                       start: 782),
+                    ProselintViolation(check: "typography.symbols.ellipsis",
+                                       column: 12,
+                                       end: 2276,
+                                       extent: 2,
+                                       line: 82,
+                                       message: "'...' is an approximation, use the ellipsis symbol '…'.",
+                                       replacements: nil,
+                                       severity: .warning,
+                                       start: 2274),
+                ])),
+        ]
+    }
+
+    func testExcludesFilesWhereProselintCommandIsNotSuccessful() {
+        finder.response = "/bin/proselint"
+        commandExecutor.resultBlock = { command in
+            if command.hasSuffix("file1") {
+                return self.proselintJSON
+            } else {
+                throw MockedCommandExecutor.CommandError.error
+            }
+        }
+
+        expect(try self.executor.executeProse(files: ["file1", "file2"])) == [
             ProselintResponse(data:
                 ProselintResponseData(errors: [
                     ProselintViolation(check: "typography.symbols.curly_quotes",

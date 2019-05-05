@@ -20,7 +20,6 @@ final class ProselintFinderTests: XCTestCase {
     }
 
     func testItSendsTheCorrectCallToTheExecutor() throws {
-        executor.success = true
         let result = try proselintFinder.findProselint()
 
         expect(self.executor).to(haveReceived(.spawn("which proselint")))
@@ -28,7 +27,7 @@ final class ProselintFinderTests: XCTestCase {
     }
 
     func testItThrowsErrorWhenTheExecutorThrowsAnError() throws {
-        executor.success = false
+        executor.resultBlock = nil
 
         expect(try self.proselintFinder.findProselint()).to(throwError(MockedCommandExecutor.CommandError.error))
     }

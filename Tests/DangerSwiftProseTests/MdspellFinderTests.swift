@@ -18,7 +18,6 @@ final class MdspellFinderTests: XCTestCase {
 
     func testItReturnsTheCorrectPath() {
         let executor = MockedCommandExecutor()
-        executor.success = true
 
         let result = mdSpellFinder.findMdspell(commandExecutor: executor)
 
@@ -28,7 +27,7 @@ final class MdspellFinderTests: XCTestCase {
 
     func testReturnsNilIfTheExecutorFails() {
         let executor = MockedCommandExecutor()
-        executor.success = false
+        executor.resultBlock = nil
 
         let result = mdSpellFinder.findMdspell(commandExecutor: executor)
 
