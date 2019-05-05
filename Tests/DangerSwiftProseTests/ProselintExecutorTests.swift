@@ -37,7 +37,9 @@ final class ProselintExecutorTests: XCTestCase {
 
     func testReturnsCorrectResultsWhenProselintCommandIsSuccessful() {
         finder.response = "/bin/proselint"
-        commandExecutor.result = proselintJSON
+        commandExecutor.resultBlock = { _ in
+            self.proselintJSON
+        }
 
         expect(try self.executor.executeProse(files: ["filePath"])) == [
             ProselintResponse(data:
