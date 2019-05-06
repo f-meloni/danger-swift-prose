@@ -1,3 +1,8 @@
+struct ProselintResult: Equatable {
+    let filePath: String
+    let violations: [ProselintViolation]
+}
+
 struct ProselintViolation: Decodable, Equatable {
     enum Severity: String, Decodable {
         case warning

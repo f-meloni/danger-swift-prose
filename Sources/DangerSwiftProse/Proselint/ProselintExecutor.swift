@@ -21,20 +21,21 @@ struct ProselintExecutor {
         self.proselintFinder = proselintFinder
     }
 
-    func executeProse(files: [String]) throws -> [ProselintResponse] {
+    func executeProse(files: [String]) throws -> [ProselintResult] {
         guard let proselintPath = try? proselintFinder.findProselint() else {
             throw Errors.proselintNotFound
         }
 
-        return files.compactMap { file -> ProselintResponse? in
+        return files.compactMap { file -> ProselintResult? in
             let result = try? commandExecutor.spawn(command: "\(proselintPath) -j \(file)")
 
             guard let data = result?.data(using: .utf8),
-                !data.isEmpty else {
+                !data.isEmpty,
+                let response = try? JSONDecoder().decode(ProselintResponse.self, from: data) else {
                 return nil
             }
 
-            return try? JSONDecoder().decode(ProselintResponse.self, from: data)
+            return ProselintResult(filePath: file, violations: response.data.errors)
         }
     }
 }
