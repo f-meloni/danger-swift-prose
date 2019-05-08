@@ -26,7 +26,7 @@ final class ProselintExecutorTests: XCTestCase {
 
         _ = try executor.executeProse(files: ["file1", "file2"])
 
-        expect(self.commandExecutor).to(haveReceived(.spawn("/bin/proselint -j file1"), .before(.spawn("/bin/proselint -j file2"))))
+        expect(self.commandExecutor).to(haveReceived(.spawn("proselint -j file1"), .before(.spawn("proselint -j file2"))))
     }
 
     func testThrowsProselintNotFoundErrorWhenProselintFinderThrowsAnError() {

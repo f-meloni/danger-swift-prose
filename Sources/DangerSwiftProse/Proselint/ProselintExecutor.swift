@@ -26,12 +26,12 @@ struct ProselintExecutor: ProselintExecuting {
     }
 
     func executeProse(files: [String]) throws -> [ProselintResult] {
-        guard let proselintPath = try? proselintFinder.findProselint() else {
+        guard (try? proselintFinder.findProselint()) != nil else {
             throw Errors.proselintNotFound
         }
 
         return files.compactMap { file -> ProselintResult? in
-            let result = try? commandExecutor.spawn(command: "\(proselintPath) -j \(file)")
+            let result = try? commandExecutor.spawn(command: "proselint -j \(file)")
 
             guard let data = result?.data(using: .utf8),
                 !data.isEmpty,
