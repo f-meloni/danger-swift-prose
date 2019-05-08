@@ -1,6 +1,10 @@
 import Foundation
 
-struct ProselintExecutor {
+protocol ProselintExecuting {
+    func executeProse(files: [String]) throws -> [ProselintResult]
+}
+
+struct ProselintExecutor: ProselintExecuting {
     enum Errors: Error, LocalizedError {
         case proselintNotFound
 
