@@ -31,9 +31,9 @@ struct ProselintExecutor: ProselintExecuting {
         }
 
         return files.compactMap { file -> ProselintResult? in
-            let result = try? commandExecutor.spawn(command: "proselint -j \(file)")
+            let result = commandExecutor.execute(command: "proselint -j \(file)")
 
-            guard let data = result?.data(using: .utf8),
+            guard let data = result.data(using: .utf8),
                 !data.isEmpty,
                 let response = try? JSONDecoder().decode(ProselintResponse.self, from: data) else {
                 return nil
