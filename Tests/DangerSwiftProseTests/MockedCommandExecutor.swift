@@ -13,10 +13,10 @@ final class MockedCommandExecutor: CommandExecuting, TestSpy {
 
     var callstack = CallstackContainer<Method>()
 
-    var result = "result"
+    let defaultResult = "result"
 
     lazy var resultBlock: ((String) throws -> String)? = { _ in
-        self.result
+        self.defaultResult
     }
 
     func execute(command: String) -> String {

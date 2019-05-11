@@ -1,3 +1,26 @@
+struct ProselintResult: Equatable {
+    let filePath: String
+    let violations: [ProselintViolation]
+
+    func toMarkdown() -> String {
+        let fileHeader = """
+        ### \(filePath)
+        | Line | Message | Severity |
+        | --- | ----- | ----- |\n
+        """
+
+        return violations.reduce(fileHeader) { (result, violation) -> String in
+            result + "| \(violation.line) | \(violation.message) | \(violation.severity.rawValue) |\n"
+        }
+    }
+}
+
+extension Array where Element == ProselintResult {
+    func toMarkdown() -> String {
+        return map { $0.toMarkdown() }.joined(separator: "\n")
+    }
+}
+
 struct ProselintViolation: Decodable, Equatable {
     enum Severity: String, Decodable {
         case warning

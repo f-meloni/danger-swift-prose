@@ -44,6 +44,13 @@ extension ProselintFinderTests {
     ]
 }
 
+extension ProselintTests {
+    static let __allTests = [
+        ("testSendsTheCorrectReportToDanger", testSendsTheCorrectReportToDanger),
+        ("testSendsTheErrorsToDanger", testSendsTheErrorsToDanger),
+    ]
+}
+
 #if !os(macOS)
     public func __allTests() -> [XCTestCaseEntry] {
         return [
@@ -53,6 +60,7 @@ extension ProselintFinderTests {
             testCase(MdspellTests.__allTests),
             testCase(ProselintExecutorTests.__allTests),
             testCase(ProselintFinderTests.__allTests),
+            testCase(ProselintTests.__allTests),
         ]
     }
 #endif

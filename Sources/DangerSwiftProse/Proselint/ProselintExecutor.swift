@@ -1,6 +1,10 @@
 import Foundation
 
-struct ProselintExecutor {
+protocol ProselintExecuting {
+    func executeProse(files: [String]) throws -> [ProselintResult]
+}
+
+struct ProselintExecutor: ProselintExecuting {
     enum Errors: Error, LocalizedError {
         case proselintNotFound
 
@@ -21,20 +25,21 @@ struct ProselintExecutor {
         self.proselintFinder = proselintFinder
     }
 
-    func executeProse(files: [String]) throws -> [ProselintResponse] {
-        guard let proselintPath = try? proselintFinder.findProselint() else {
+    func executeProse(files: [String]) throws -> [ProselintResult] {
+        guard (try? proselintFinder.findProselint()) != nil else {
             throw Errors.proselintNotFound
         }
 
-        return files.compactMap { file -> ProselintResponse? in
-            let result = try? commandExecutor.spawn(command: "\(proselintPath) -j \(file)")
+        return files.compactMap { file -> ProselintResult? in
+            let result = commandExecutor.execute(command: "proselint -j \(file)")
 
-            guard let data = result?.data(using: .utf8),
-                !data.isEmpty else {
+            guard let data = result.data(using: .utf8),
+                !data.isEmpty,
+                let response = try? JSONDecoder().decode(ProselintResponse.self, from: data) else {
                 return nil
             }
 
-            return try? JSONDecoder().decode(ProselintResponse.self, from: data)
+            return ProselintResult(filePath: file, violations: response.data.errors)
         }
     }
 }

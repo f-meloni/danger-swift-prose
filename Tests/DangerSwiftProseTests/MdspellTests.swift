@@ -15,6 +15,7 @@ final class MdspellTests: XCTestCase {
 
     override func tearDown() {
         createdFiles?.forEach { try? FileManager.default.removeItem(atPath: $0) }
+        resetDangerResults()
         super.tearDown()
     }
 

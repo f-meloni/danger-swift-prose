@@ -22,7 +22,7 @@ final class MdspellFinderTests: XCTestCase {
         let result = mdSpellFinder.findMdspell(commandExecutor: executor)
 
         expect(executor).to(haveReceived(.spawn("which mdspell")))
-        expect(result) == executor.result
+        expect(result) == executor.defaultResult
     }
 
     func testReturnsNilIfTheExecutorFails() {
