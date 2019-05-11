@@ -12,6 +12,7 @@ matrix:
     - os: osx
       osx_image: xcode10
       install:
+        - export PATH=$HOME/.local/bin:$PATH
         - pip install --user proselint
         - npm install -g danger
       script:
@@ -19,7 +20,6 @@ matrix:
         - swift test
         - DEBUG="*" swift run danger-swift ci
     - os: linux
-      language: generic
       sudo: required
       dist: trusty
       install:
