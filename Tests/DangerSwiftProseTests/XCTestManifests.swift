@@ -47,6 +47,7 @@ extension ProselintFinderTests {
 extension ProselintTests {
     static let __allTests = [
         ("testSendsTheCorrectReportToDanger", testSendsTheCorrectReportToDanger),
+        ("testSendsTheErrorsToDanger", testSendsTheErrorsToDanger),
     ]
 }
 

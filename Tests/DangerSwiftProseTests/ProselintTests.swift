@@ -31,9 +31,28 @@ final class ProselintTests: XCTestCase {
             """,
         ]
     }
+
+    func testSendsTheErrorsToDanger() {
+        let dsl = githubFixtureDSL
+        let executor = MockedProselintExecutor()
+        executor.success = false
+        Proselint.performSpellCheck(files: ["filePath", "filePath2"], proselintExecutor: executor, dsl: dsl)
+
+        expect(dsl.fails.map { $0.message }) == [
+            "test message",
+        ]
+    }
 }
 
 private final class MockedProselintExecutor: ProselintExecuting {
+    enum TestError: LocalizedError {
+        case error
+
+        var errorDescription: String? {
+            return "test message"
+        }
+    }
+
     let response = [
         ProselintResult(filePath: "filePath", violations: [
             ProselintViolation(check: "typography.symbols.curly_quotes",
@@ -77,7 +96,13 @@ private final class MockedProselintExecutor: ProselintExecuting {
         ]),
     ]
 
+    var success = true
+
     func executeProse(files _: [String]) throws -> [ProselintResult] {
-        return response
+        if success {
+            return response
+        } else {
+            throw TestError.error
+        }
     }
 }
