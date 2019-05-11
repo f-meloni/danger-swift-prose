@@ -12,7 +12,7 @@ matrix:
     - os: osx
       osx_image: xcode10
       install:
-        - export PATH=$HOME/.local/bin:$PATH
+        - export PATH=$HOME/Library/Python/2.7/bin:$PATH
         - pip install --user proselint
         - npm install -g danger
       script:
