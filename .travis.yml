@@ -16,7 +16,6 @@ matrix:
         - pip install --user proselint
         - npm install -g danger
       script:
-        - proselint -j README.md 
         - swift test
         - DEBUG="*" swift run danger-swift ci
     - os: linux
