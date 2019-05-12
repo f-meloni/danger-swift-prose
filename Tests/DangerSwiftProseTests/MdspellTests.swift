@@ -29,11 +29,11 @@ final class MdspellTests: XCTestCase {
         createdFiles.append("README1.md")
         createdFiles.append("README2.md")
 
-        MdspellCheck.performSpellCheck(files: ["file"],
-                                       ignoredWords: ["word"],
-                                       language: "en-us",
-                                       mdspellCheckExecutor: spellCheckExecutor,
-                                       dsl: dsl)
+        Mdspell.performSpellCheck(files: ["file"],
+                                  ignoredWords: ["word"],
+                                  language: "en-us",
+                                  mdspellCheckExecutor: spellCheckExecutor,
+                                  dsl: dsl)
 
         expect(spellCheckExecutor).to(haveReceived(.executeSpellCheck(files: ["file"], ignoredWords: ["word"], language: "en-us")))
         expect(dsl.markdowns.map { $0.message }) == [
@@ -75,11 +75,11 @@ final class MdspellTests: XCTestCase {
         spellCheckExecutor.success = false
         let dsl = githubFixtureDSL
 
-        MdspellCheck.performSpellCheck(files: ["file"],
-                                       ignoredWords: ["word"],
-                                       language: "en-us",
-                                       mdspellCheckExecutor: spellCheckExecutor,
-                                       dsl: dsl)
+        Mdspell.performSpellCheck(files: ["file"],
+                                  ignoredWords: ["word"],
+                                  language: "en-us",
+                                  mdspellCheckExecutor: spellCheckExecutor,
+                                  dsl: dsl)
 
         expect(dsl.fails.map { $0.message }) == ["test error"]
     }
