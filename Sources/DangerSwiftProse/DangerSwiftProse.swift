@@ -1,7 +1,7 @@
 import Danger
 import Foundation
 
-public enum MdspellCheck {
+public enum Mdspell {
     public static func performSpellCheck(files: [String]? = nil,
                                          ignoredWords: [String],
                                          language: String) {
