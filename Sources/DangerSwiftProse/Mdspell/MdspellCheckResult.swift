@@ -41,7 +41,11 @@ struct MdspellCheckResult {
             return nil
         }
 
-        let mdSpellReport = "### Mdspell report on \(file):\n"
+        let mdSpellReport = """
+        ### Mdspell report on \(file):
+        | Line | Typo |
+        | ---- | ---- |\n
+        """
 
         return violations.reduce(mdSpellReport) { result, violation in
             result + "| \(violation.line) | \(violation.typo) |\n"
@@ -59,17 +63,6 @@ extension MdspellCheckResult: Equatable {
 struct MdspellCheckViolation {
     let line: String
     let typo: String
-}
-
-extension Array where Element == MdspellCheckViolation {
-    func toMarkdown() -> String? {
-        return reduce("""
-        | Line | Typo |
-        | ---- | ---- |\n
-        """) { result, violation in
-            result + "| \(violation.line) | \(violation.typo) |\n"
-        }
-    }
 }
 
 extension Array where Element == MdspellCheckResult {

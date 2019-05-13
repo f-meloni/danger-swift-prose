@@ -39,6 +39,8 @@ final class MdspellTests: XCTestCase {
         expect(dsl.markdowns.map { $0.message }) == [
             """
             ### Mdspell report on README1.md:
+            | Line | Typo |
+            | ---- | ---- |
             | 6 | Dangerfiles |
             | 12 | v0.4.1 |
             | 13 | v0.3.6 |
@@ -60,6 +62,8 @@ final class MdspellTests: XCTestCase {
             | 202 | org |
 
             ### Mdspell report on README2.md:
+            | Line | Typo |
+            | ---- | ---- |
             | 1 | DangerSwiftProse |
 
             """,
