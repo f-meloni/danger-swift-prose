@@ -19,13 +19,13 @@ final class ProselintTests: XCTestCase {
             ### filePath
             | Line | Message | Severity |
             | --- | ----- | ----- |
-            | 29 | Use curly quotes “”, not straight quotes \"\". Found once elsewhere. | warning |
+            | 29 | Use curly quotes “”, not straight quotes "". Found once elsewhere. | warning |
             | 82 | '...' is an approximation, use the ellipsis symbol '…'. | warning |
 
             ### filePath2
             | Line | Message | Severity |
             | --- | ----- | ----- |
-            | 29 | Use curly quotes “”, not straight quotes \"\". Found once elsewhere. | warning |
+            | 29 | Use curly quotes “”, not straight quotes "". Found once elsewhere. | warning |
             | 82 | '...' is an approximation, use the ellipsis symbol '…'. | warning |
 
             """,

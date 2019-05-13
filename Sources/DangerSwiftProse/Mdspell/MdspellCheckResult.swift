@@ -34,6 +34,19 @@ struct MdspellCheckResult {
             return MdspellCheckViolation(line: String(line), typo: String(typo))
         }
     }
+
+    func toMarkdown() -> String? {
+        let violations = self.violations()
+        guard !violations.isEmpty else {
+            return nil
+        }
+
+        let mdSpellReport = "### Mdspell report on \(file):\n"
+
+        return violations.reduce(mdSpellReport) { result, violation in
+            result + "| \(violation.line) | \(violation.typo) |\n"
+        }
+    }
 }
 
 extension MdspellCheckResult: Equatable {
@@ -49,7 +62,7 @@ struct MdspellCheckViolation {
 }
 
 extension Array where Element == MdspellCheckViolation {
-    func toMarkdown() -> String {
+    func toMarkdown() -> String? {
         return reduce("""
         | Line | Typo |
         | ---- | ---- |\n
@@ -61,20 +74,7 @@ extension Array where Element == MdspellCheckViolation {
 
 extension Array where Element == MdspellCheckResult {
     func toMarkdown() -> String {
-        return reduce("") {
-            let violations = $1.violations()
-
-            if violations.count > 0 {
-                return $0 +
-                    """
-                    ### Mdspell report on \($1.file):
-                    \($1.violations().toMarkdown())
-                    
-                    """
-            } else {
-                return $0
-            }
-        }
+        return compactMap { $0.toMarkdown() }.joined(separator: "\n")
     }
 }
 
