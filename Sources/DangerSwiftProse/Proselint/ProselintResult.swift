@@ -2,7 +2,11 @@ struct ProselintResult: Equatable {
     let filePath: String
     let violations: [ProselintViolation]
 
-    func toMarkdown() -> String {
+    func toMarkdown() -> String? {
+        guard !violations.isEmpty else {
+            return nil
+        }
+
         let fileHeader = """
         ### \(filePath)
         | Line | Message | Severity |
@@ -17,7 +21,7 @@ struct ProselintResult: Equatable {
 
 extension Array where Element == ProselintResult {
     func toMarkdown() -> String {
-        return map { $0.toMarkdown() }.joined(separator: "\n")
+        return compactMap { $0.toMarkdown() }.joined(separator: "\n")
     }
 }
 

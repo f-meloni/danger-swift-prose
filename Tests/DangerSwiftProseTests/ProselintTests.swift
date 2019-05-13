@@ -19,17 +19,28 @@ final class ProselintTests: XCTestCase {
             ### filePath
             | Line | Message | Severity |
             | --- | ----- | ----- |
-            | 29 | Use curly quotes “”, not straight quotes \"\". Found once elsewhere. | warning |
+            | 29 | Use curly quotes “”, not straight quotes "". Found once elsewhere. | warning |
             | 82 | '...' is an approximation, use the ellipsis symbol '…'. | warning |
 
             ### filePath2
             | Line | Message | Severity |
             | --- | ----- | ----- |
-            | 29 | Use curly quotes “”, not straight quotes \"\". Found once elsewhere. | warning |
+            | 29 | Use curly quotes “”, not straight quotes "". Found once elsewhere. | warning |
             | 82 | '...' is an approximation, use the ellipsis symbol '…'. | warning |
 
             """,
         ]
+    }
+
+    func testDoesntSendAMarkdownIfThereAreNoViolations() {
+        let dsl = githubFixtureDSL
+        let executor = MockedProselintExecutor()
+        executor.success = true
+        executor.response = []
+        Proselint.performSpellCheck(files: ["filePath", "filePath2"], proselintExecutor: executor, dsl: dsl)
+
+        expect(dsl.fails).to(beEmpty())
+        expect(dsl.markdowns).to(beEmpty())
     }
 
     func testSendsTheErrorsToDanger() {
@@ -53,7 +64,7 @@ private final class MockedProselintExecutor: ProselintExecuting {
         }
     }
 
-    let response = [
+    var response = [
         ProselintResult(filePath: "filePath", violations: [
             ProselintViolation(check: "typography.symbols.curly_quotes",
                                column: 34,

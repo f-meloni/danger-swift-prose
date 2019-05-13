@@ -65,7 +65,7 @@ final class MdspellTests: XCTestCase {
             | Line | Typo |
             | ---- | ---- |
             | 1 | DangerSwiftProse |
-            \n
+
             """,
         ]
     }
