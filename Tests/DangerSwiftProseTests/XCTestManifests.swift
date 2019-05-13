@@ -46,6 +46,7 @@ extension ProselintFinderTests {
 
 extension ProselintTests {
     static let __allTests = [
+        ("testDoesntSendAMarkdownIfThereAreNoViolations", testDoesntSendAMarkdownIfThereAreNoViolations),
         ("testSendsTheCorrectReportToDanger", testSendsTheCorrectReportToDanger),
         ("testSendsTheErrorsToDanger", testSendsTheErrorsToDanger),
     ]

@@ -59,10 +59,9 @@ public enum Proselint {
 
         do {
             let proselintResults = try proselintExecutor.executeProse(files: spellCheckFiles)
-
             let markdown = proselintResults.toMarkdown()
 
-            if markdown.count > 0 {
+            if !markdown.isEmpty {
                 dsl.markdown(markdown)
             }
         } catch {

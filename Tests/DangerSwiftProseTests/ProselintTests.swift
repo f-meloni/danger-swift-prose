@@ -32,6 +32,17 @@ final class ProselintTests: XCTestCase {
         ]
     }
 
+    func testDoesntSendAMarkdownIfThereAreNoViolations() {
+        let dsl = githubFixtureDSL
+        let executor = MockedProselintExecutor()
+        executor.success = true
+        executor.response = []
+        Proselint.performSpellCheck(files: ["filePath", "filePath2"], proselintExecutor: executor, dsl: dsl)
+
+        expect(dsl.fails).to(beEmpty())
+        expect(dsl.markdowns).to(beEmpty())
+    }
+
     func testSendsTheErrorsToDanger() {
         let dsl = githubFixtureDSL
         let executor = MockedProselintExecutor()
@@ -53,7 +64,7 @@ private final class MockedProselintExecutor: ProselintExecuting {
         }
     }
 
-    let response = [
+    var response = [
         ProselintResult(filePath: "filePath", violations: [
             ProselintViolation(check: "typography.symbols.curly_quotes",
                                column: 34,
