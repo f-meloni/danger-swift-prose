@@ -83,9 +83,24 @@ final class MdspellTests: XCTestCase {
 
         expect(dsl.fails.map { $0.message }) == ["test error"]
     }
+
+    func testDoesntSendAMarkdownIfThereAreNoViolations() {
+        let dsl = githubFixtureDSL
+        let spellCheckExecutor = MockedMdspellCheckExecutor()
+        spellCheckExecutor.success = true
+        spellCheckExecutor.result = []
+        Mdspell.performSpellCheck(files: ["file"],
+                                  ignoredWords: ["word"],
+                                  language: "en-us",
+                                  mdspellCheckExecutor: spellCheckExecutor,
+                                  dsl: dsl)
+
+        expect(dsl.fails).to(beEmpty())
+        expect(dsl.markdowns).to(beEmpty())
+    }
 }
 
-final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
+private final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
     enum Errors: Error, LocalizedError {
         case fakeError
 
@@ -112,42 +127,40 @@ final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
         }
     }
 
-    private var result: [MdspellCheckResult] {
-        return [
-            MdspellCheckResult(file: "README1.md", checkResult:
-                """
-                    README1.md
-                        6:176 | Write your Dangerfiles in Swift.
-                        12:285 | f you are using Swift 4.1 use v0.4.1
-                        13:326 |  you are using Swift 4.0, Use v0.3.6
-                        17:379 | You can make a Dangerfile that looks through PR metadat
-                        47:1318 | /23` - Use this to build your Dangerfile
-                        49:1491 | code project for working on a Dangerfile
-                        51:1508 | #### Plugins
-                        53:1550 | rastructure exists to support plugins, which can help you avoid rep
-                        56:1647 | e.g. A plugin implemented with the followin
-                        72:2021 |  both `danger-swift` and your plugins:
-                        107:2915 | [Fake.swift](Sources/Sources/Danger-Swift
-                        119:3553 | For example, a plugin could be used by the followin
-                        129:3770 | see an [example danger-swift plugin](https://github.com/ashfurrow
-                        161:4324 | #### Local compiled danger-js
-                        163:4367 |  use a local compiled copy of danger-js use the `danger-js-path` argu
-                        188:4852 | If you want to emulate how DangerJS's `process` will work entirely,
-                        200:5099 | I, orta, only plan on bootstrapping t
-                        201:5329 | ed in helping out, make a few PRs
-                        202:5351 | and I'll give you org access.
+    var result: [MdspellCheckResult] = [
+        MdspellCheckResult(file: "README1.md", checkResult:
+            """
+                README1.md
+                    6:176 | Write your Dangerfiles in Swift.
+                    12:285 | f you are using Swift 4.1 use v0.4.1
+                    13:326 |  you are using Swift 4.0, Use v0.3.6
+                    17:379 | You can make a Dangerfile that looks through PR metadat
+                    47:1318 | /23` - Use this to build your Dangerfile
+                    49:1491 | code project for working on a Dangerfile
+                    51:1508 | #### Plugins
+                    53:1550 | rastructure exists to support plugins, which can help you avoid rep
+                    56:1647 | e.g. A plugin implemented with the followin
+                    72:2021 |  both `danger-swift` and your plugins:
+                    107:2915 | [Fake.swift](Sources/Sources/Danger-Swift
+                    119:3553 | For example, a plugin could be used by the followin
+                    129:3770 | see an [example danger-swift plugin](https://github.com/ashfurrow
+                    161:4324 | #### Local compiled danger-js
+                    163:4367 |  use a local compiled copy of danger-js use the `danger-js-path` argu
+                    188:4852 | If you want to emulate how DangerJS's `process` will work entirely,
+                    200:5099 | I, orta, only plan on bootstrapping t
+                    201:5329 | ed in helping out, make a few PRs
+                    202:5351 | and I'll give you org access.
 
-                >> 19 spelling errors found in 1 file
-                """),
-            MdspellCheckResult(file: "README2.md", checkResult:
-                """
-                    other/README2.md
-                        1:2 | # DangerSwiftProse
+            >> 19 spelling errors found in 1 file
+            """),
+        MdspellCheckResult(file: "README2.md", checkResult:
+            """
+                other/README2.md
+                    1:2 | # DangerSwiftProse
 
-                >> 1 spelling error found in 1 file
-                """),
-        ]
-    }
+            >> 1 spelling error found in 1 file
+            """),
+    ]
 }
 
 private var readme1Content: String {

@@ -23,6 +23,7 @@ extension MdspellInstallerTests {
 
 extension MdspellTests {
     static let __allTests = [
+        ("testDoesntSendAMarkdownIfThereAreNoViolations", testDoesntSendAMarkdownIfThereAreNoViolations),
         ("testItSendsAFailIfTheExecutionFails", testItSendsAFailIfTheExecutionFails),
         ("testSendsTheCorrectReportToDanger", testSendsTheCorrectReportToDanger),
     ]
