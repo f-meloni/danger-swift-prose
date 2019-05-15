@@ -36,7 +36,10 @@ final class ProselintTests: XCTestCase {
         let dsl = githubFixtureDSL
         let executor = MockedProselintExecutor()
         executor.success = true
-        executor.response = []
+        executor.response = [
+            ProselintResult(filePath: "filePath", violations: []),
+            ProselintResult(filePath: "filePath1", violations: []),
+        ]
         Proselint.performSpellCheck(files: ["filePath", "filePath2"], proselintExecutor: executor, dsl: dsl)
 
         expect(dsl.fails).to(beEmpty())
