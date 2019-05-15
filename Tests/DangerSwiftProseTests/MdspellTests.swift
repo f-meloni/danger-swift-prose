@@ -88,7 +88,9 @@ final class MdspellTests: XCTestCase {
         let dsl = githubFixtureDSL
         let spellCheckExecutor = MockedMdspellCheckExecutor()
         spellCheckExecutor.success = true
-        spellCheckExecutor.result = []
+        spellCheckExecutor.result = [
+            MdspellCheckResult(file: "file", checkResult: ">> 1 file is free from spelling errors"),
+        ]
         Mdspell.performSpellCheck(files: ["file"],
                                   ignoredWords: ["word"],
                                   language: "en-us",
