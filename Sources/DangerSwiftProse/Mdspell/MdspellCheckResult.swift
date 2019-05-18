@@ -23,10 +23,7 @@ struct MdspellCheckResult {
 
             guard let fileContent = try? String(contentsOfFile: file),
                 let typo = fileContent[String.Index(encodedOffset: typoIndex) ..< fileContent.endIndex]
-                .lazy
-                .split(whereSeparator: {
-                    $0 == "\n" || $0 == " "
-                })
+                .components(separatedBy: CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "[]()")))
                 .first else {
                 return nil
             }

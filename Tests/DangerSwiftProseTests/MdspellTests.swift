@@ -51,9 +51,9 @@ final class MdspellTests: XCTestCase {
             | 53 | plugins, |
             | 56 | plugin |
             | 72 | plugins: |
-            | 107 | Fake.swift](Sources/Sources/Danger-Swift/Fake.swift) |
+            | 107 | Fake.swift |
             | 119 | plugin |
-            | 129 | plugin](https://github.com/ashfurrow/danger-swiftlint#danger-swiftlint). |
+            | 129 | plugin |
             | 161 | danger-js |
             | 163 | danger-js |
             | 188 | DangerJS's |
