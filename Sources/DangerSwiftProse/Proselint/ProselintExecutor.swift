@@ -30,7 +30,7 @@ struct ProselintExecutor: ProselintExecuting {
 
     func executeProse(files: [String]) throws -> [ProselintResult] {
         if (try? proselintFinder.findProselint()) == nil {
-            proselintInstaller.installProselint()
+            try proselintInstaller.installProselint()
 
             if (try? proselintFinder.findProselint()) == nil {
                 throw Errors.proselintNotFound

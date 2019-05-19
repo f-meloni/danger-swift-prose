@@ -1,5 +1,5 @@
 protocol ProselintInstalling {
-    func installProselint()
+    func installProselint() throws
 }
 
 struct ProselintInstaller: ProselintInstalling {
@@ -9,7 +9,7 @@ struct ProselintInstaller: ProselintInstalling {
         self.executor = executor
     }
 
-    func installProselint() {
-        executor.execute(command: "pip install --user proselint")
+    func installProselint() throws {
+        try executor.spawn(command: "pip install --user proselint")
     }
 }

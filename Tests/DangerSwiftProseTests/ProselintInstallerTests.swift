@@ -4,12 +4,12 @@ import TestSpy
 import XCTest
 
 final class ProselintInstallerTests: XCTestCase {
-    func testSendsCorrectCommandOnInstall() {
+    func testSendsCorrectCommandOnInstall() throws {
         let commandExecutor = MockedCommandExecutor()
         let proselint = ProselintInstaller(executor: commandExecutor)
 
-        proselint.installProselint()
+        try proselint.installProselint()
 
-        expect(commandExecutor).to(haveReceived(.execute("pip install --user proselint")))
+        expect(commandExecutor).to(haveReceived(.spawn("pip install --user proselint")))
     }
 }
