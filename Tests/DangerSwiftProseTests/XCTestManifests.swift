@@ -31,6 +31,7 @@ extension MdspellTests {
 
 extension ProselintExecutorTests {
     static let __allTests = [
+        ("testDoesntThrowsAnErrorIfProselintIsNotFoundButThenIsInstalled", testDoesntThrowsAnErrorIfProselintIsNotFoundButThenIsInstalled),
         ("testExcludesFilesWhereProselintCommandIsNotSuccessful", testExcludesFilesWhereProselintCommandIsNotSuccessful),
         ("testReturnsCorrectResultsWhenProselintCommandIsSuccessful", testReturnsCorrectResultsWhenProselintCommandIsSuccessful),
         ("testSendsCorrectCommandsToCommandExecutor", testSendsCorrectCommandsToCommandExecutor),

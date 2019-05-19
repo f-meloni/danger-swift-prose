@@ -5,7 +5,7 @@ protocol MarkdownConvertible {
 extension Array: MarkdownConvertible where Element: MarkdownConvertible {
     func toMarkdown() -> String? {
         let markdownItems = compactMap { $0.toMarkdown() }
-        
+
         if markdownItems.isEmpty {
             return nil
         } else {

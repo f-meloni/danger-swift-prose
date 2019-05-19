@@ -1,4 +1,8 @@
-struct ProselintInstaller {
+protocol ProselintInstalling {
+    func installProselint()
+}
+
+struct ProselintInstaller: ProselintInstalling {
     let executor: CommandExecuting
 
     init(executor: CommandExecuting = CommandExecutor()) {

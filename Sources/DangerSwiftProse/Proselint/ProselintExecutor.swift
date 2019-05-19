@@ -18,16 +18,23 @@ struct ProselintExecutor: ProselintExecuting {
 
     let commandExecutor: CommandExecuting
     let proselintFinder: ProselintFinding
+    let proselintInstaller: ProselintInstalling
 
     init(commandExecutor: CommandExecuting = CommandExecutor(),
-         proselintFinder: ProselintFinding = ProselintFinder()) {
+         proselintFinder: ProselintFinding = ProselintFinder(),
+         proselintInstaller: ProselintInstalling = ProselintInstaller()) {
         self.commandExecutor = commandExecutor
         self.proselintFinder = proselintFinder
+        self.proselintInstaller = proselintInstaller
     }
 
     func executeProse(files: [String]) throws -> [ProselintResult] {
-        guard (try? proselintFinder.findProselint()) != nil else {
-            throw Errors.proselintNotFound
+        if (try? proselintFinder.findProselint()) == nil {
+            proselintInstaller.installProselint()
+
+            if (try? proselintFinder.findProselint()) == nil {
+                throw Errors.proselintNotFound
+            }
         }
 
         return files.compactMap { file -> ProselintResult? in
