@@ -1,4 +1,4 @@
-struct ProselintResult: Equatable {
+struct ProselintResult: Equatable, MarkdownConvertible {
     let filePath: String
     let violations: [ProselintViolation]
 
@@ -16,12 +16,6 @@ struct ProselintResult: Equatable {
         return violations.reduce(fileHeader) { (result, violation) -> String in
             result + "| \(violation.line) | \(violation.message) | \(violation.severity.rawValue) |\n"
         }
-    }
-}
-
-extension Array where Element == ProselintResult {
-    func toMarkdown() -> String {
-        return compactMap { $0.toMarkdown() }.joined(separator: "\n")
     }
 }
 

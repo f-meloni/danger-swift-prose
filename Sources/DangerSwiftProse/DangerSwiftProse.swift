@@ -30,9 +30,7 @@ public enum Mdspell {
                                                                                ignoredWords: ignoredWords,
                                                                                language: language)
 
-            let markdown = spellCheckResults.toMarkdown()
-
-            if markdown.count > 0 {
+            if let markdown = spellCheckResults.toMarkdown() {
                 dsl.markdown(markdown)
             }
         } catch {
@@ -59,9 +57,8 @@ public enum Proselint {
 
         do {
             let proselintResults = try proselintExecutor.executeProse(files: spellCheckFiles)
-            let markdown = proselintResults.toMarkdown()
 
-            if !markdown.isEmpty {
+            if let markdown = proselintResults.toMarkdown() {
                 dsl.markdown(markdown)
             }
         } catch {
