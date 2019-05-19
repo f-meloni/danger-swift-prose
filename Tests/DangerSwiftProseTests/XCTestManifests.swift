@@ -45,6 +45,12 @@ extension ProselintFinderTests {
     ]
 }
 
+extension ProselintInstallerTests {
+    static let __allTests = [
+        ("testSendsCorrectCommandOnInstall", testSendsCorrectCommandOnInstall),
+    ]
+}
+
 extension ProselintTests {
     static let __allTests = [
         ("testDoesntSendAMarkdownIfThereAreNoViolations", testDoesntSendAMarkdownIfThereAreNoViolations),
@@ -62,6 +68,7 @@ extension ProselintTests {
             testCase(MdspellTests.__allTests),
             testCase(ProselintExecutorTests.__allTests),
             testCase(ProselintFinderTests.__allTests),
+            testCase(ProselintInstallerTests.__allTests),
             testCase(ProselintTests.__allTests),
         ]
     }
