@@ -55,7 +55,7 @@ final class ProselintExecutorTests: XCTestCase {
         let result = try executor.executeProse(files: [])
 
         expect(self.installer).to(haveReceived(.installProselint))
-        expect(try self.executor.executeProse(files: ["filePath"])) == [
+        expect(result) == [
             ProselintResult(filePath: "filePath", violations: [
                 ProselintViolation(check: "typography.symbols.curly_quotes",
                                    column: 34,
