@@ -18,19 +18,19 @@ struct ProselintExecutor: ProselintExecuting {
 
     let commandExecutor: CommandExecuting
     let proselintFinder: ProselintFinding
-    let proselintInstaller: ProselintInstalling
+    let installer: ToolInstalling
 
     init(commandExecutor: CommandExecuting = CommandExecutor(),
          proselintFinder: ProselintFinding = ProselintFinder(),
-         proselintInstaller: ProselintInstalling = ProselintInstaller()) {
+         installer: ToolInstalling = ToolInstaller()) {
         self.commandExecutor = commandExecutor
         self.proselintFinder = proselintFinder
-        self.proselintInstaller = proselintInstaller
+        self.installer = installer
     }
 
     func executeProse(files: [String]) throws -> [ProselintResult] {
         if (try? proselintFinder.findProselint()) == nil {
-            try proselintInstaller.installProselint()
+            try installer.install(.proselint)
 
             if (try? proselintFinder.findProselint()) == nil {
                 throw Errors.proselintNotFound

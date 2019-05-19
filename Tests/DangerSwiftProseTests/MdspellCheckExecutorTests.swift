@@ -7,14 +7,14 @@ final class MdspellCheckExecutorTests: XCTestCase {
     private var checkExecutor: MdspellCheckExecutor!
     private var finder: MockedMdspellFinder!
     private var commandExecutor: MockedCommandExecutor!
-    private var installer: SpyMdspellInstaller!
+    private var installer: SpyToolInstaller!
 
     override func setUp() {
         super.setUp()
         checkExecutor = MdspellCheckExecutor()
         finder = MockedMdspellFinder()
         commandExecutor = MockedCommandExecutor()
-        installer = SpyMdspellInstaller()
+        installer = SpyToolInstaller()
     }
 
     override func tearDown() {
@@ -40,7 +40,7 @@ final class MdspellCheckExecutorTests: XCTestCase {
         finder.result = nil
 
         expect(try self.executeSpellCheck()).to(throwError(closure: { error in
-            expect(self.installer).to(haveReceived(.installMdspell))
+            expect(self.installer).to(haveReceived(.install(.mdspell)))
             expect(error.localizedDescription) == "mdspell is not installed"
         }))
     }
@@ -63,7 +63,7 @@ final class MdspellCheckExecutorTests: XCTestCase {
                                                    language: "en-us",
                                                    mdspellFinder: finder,
                                                    commandExecutor: commandExecutor,
-                                                   mdspellInstaller: installer)
+                                                   installer: installer)
     }
 }
 
@@ -72,17 +72,5 @@ private final class MockedMdspellFinder: MdspellFinding {
 
     func findMdspell(commandExecutor _: CommandExecuting) -> String? {
         return result
-    }
-}
-
-private final class SpyMdspellInstaller: MdspellInstalling, TestSpy {
-    enum Method: Equatable {
-        case installMdspell
-    }
-
-    var callstack = CallstackContainer<Method>()
-
-    func installMdspell(executor _: CommandExecuting) throws {
-        callstack.record(.installMdspell)
     }
 }

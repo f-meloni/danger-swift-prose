@@ -6,15 +6,15 @@ import XCTest
 final class ProselintExecutorTests: XCTestCase {
     private var commandExecutor: MockedCommandExecutor!
     private var finder: StubbedProselintFinder!
-    private var installer: SpyProselintInstaller!
+    private var installer: SpyToolInstaller!
     private var executor: ProselintExecutor!
 
     override func setUp() {
         super.setUp()
         commandExecutor = MockedCommandExecutor()
         finder = StubbedProselintFinder()
-        installer = SpyProselintInstaller()
-        executor = ProselintExecutor(commandExecutor: commandExecutor, proselintFinder: finder, proselintInstaller: installer)
+        installer = SpyToolInstaller()
+        executor = ProselintExecutor(commandExecutor: commandExecutor, proselintFinder: finder, installer: installer)
     }
 
     override func tearDown() {
@@ -58,7 +58,7 @@ final class ProselintExecutorTests: XCTestCase {
 
         let result = try executor.executeProse(files: ["filePath"])
 
-        expect(self.installer).to(haveReceived(.installProselint))
+        expect(self.installer).to(haveReceived(.install(.proselint)))
         expect(result) == [
             ProselintResult(filePath: "filePath", violations: [
                 ProselintViolation(check: "typography.symbols.curly_quotes",
@@ -195,17 +195,5 @@ private final class StubbedProselintFinder: ProselintFinding {
 
     func findProselint() throws -> String {
         return try responseBlock()
-    }
-}
-
-private final class SpyProselintInstaller: ProselintInstalling, TestSpy {
-    enum Method: Equatable {
-        case installProselint
-    }
-
-    var callstack = CallstackContainer<Method>()
-
-    func installProselint() {
-        callstack.record(.installProselint)
     }
 }
