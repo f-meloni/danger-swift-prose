@@ -32,9 +32,9 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
                            language: String,
                            mdspellFinder: MdspellFinding,
                            commandExecutor: CommandExecuting,
-                           mdspellInstaller: MdspellInstalling = MdspellInstaller()) throws -> [MdspellCheckResult] {
+                           installer: ToolInstalling = ToolInstaller()) throws -> [MdspellCheckResult] {
         if mdspellFinder.findMdspell(commandExecutor: commandExecutor)?.isEmpty ?? true {
-            try mdspellInstaller.installMdspell(executor: commandExecutor)
+            try installer.install(.mdspell)
 
             if mdspellFinder.findMdspell(commandExecutor: commandExecutor)?.isEmpty ?? true {
                 throw Errors.mdspellNotFound

@@ -1,6 +1,6 @@
 import Foundation
 
-struct MdspellCheckResult {
+struct MdspellCheckResult: MarkdownConvertible {
     private let checkResult: String
     let file: String
 
@@ -60,12 +60,6 @@ extension MdspellCheckResult: Equatable {
 struct MdspellCheckViolation {
     let line: String
     let typo: String
-}
-
-extension Array where Element == MdspellCheckResult {
-    func toMarkdown() -> String {
-        return compactMap { $0.toMarkdown() }.joined(separator: "\n")
-    }
 }
 
 extension String {

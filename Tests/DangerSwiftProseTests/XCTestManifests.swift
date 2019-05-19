@@ -15,12 +15,6 @@ extension MdspellFinderTests {
     ]
 }
 
-extension MdspellInstallerTests {
-    static let __allTests = [
-        ("testItSendsTheCorrectCommandToTheExecutor", testItSendsTheCorrectCommandToTheExecutor),
-    ]
-}
-
 extension MdspellTests {
     static let __allTests = [
         ("testDoesntSendAMarkdownIfThereAreNoViolations", testDoesntSendAMarkdownIfThereAreNoViolations),
@@ -31,6 +25,7 @@ extension MdspellTests {
 
 extension ProselintExecutorTests {
     static let __allTests = [
+        ("testDoesntThrowsAnErrorIfProselintIsNotFoundButThenIsInstalled", testDoesntThrowsAnErrorIfProselintIsNotFoundButThenIsInstalled),
         ("testExcludesFilesWhereProselintCommandIsNotSuccessful", testExcludesFilesWhereProselintCommandIsNotSuccessful),
         ("testReturnsCorrectResultsWhenProselintCommandIsSuccessful", testReturnsCorrectResultsWhenProselintCommandIsSuccessful),
         ("testSendsCorrectCommandsToCommandExecutor", testSendsCorrectCommandsToCommandExecutor),
@@ -53,16 +48,23 @@ extension ProselintTests {
     ]
 }
 
+extension ToolInstallerTests {
+    static let __allTests = [
+        ("testSendsCorrectCommandOnMdspellInstall", testSendsCorrectCommandOnMdspellInstall),
+        ("testSendsCorrectCommandOnProselintInstall", testSendsCorrectCommandOnProselintInstall),
+    ]
+}
+
 #if !os(macOS)
     public func __allTests() -> [XCTestCaseEntry] {
         return [
             testCase(MdspellCheckExecutorTests.__allTests),
             testCase(MdspellFinderTests.__allTests),
-            testCase(MdspellInstallerTests.__allTests),
             testCase(MdspellTests.__allTests),
             testCase(ProselintExecutorTests.__allTests),
             testCase(ProselintFinderTests.__allTests),
             testCase(ProselintTests.__allTests),
+            testCase(ToolInstallerTests.__allTests),
         ]
     }
 #endif
