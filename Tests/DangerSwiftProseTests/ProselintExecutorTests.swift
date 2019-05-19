@@ -52,7 +52,11 @@ final class ProselintExecutorTests: XCTestCase {
             }
         }
 
-        let result = try executor.executeProse(files: [])
+        commandExecutor.resultBlock = { _ in
+            self.proselintJSON
+        }
+
+        let result = try executor.executeProse(files: ["filePath"])
 
         expect(self.installer).to(haveReceived(.installProselint))
         expect(result) == [
