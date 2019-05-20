@@ -61,24 +61,12 @@ final class ProselintExecutorTests: XCTestCase {
         expect(self.installer).to(haveReceived(.install(.proselint)))
         expect(result) == [
             ProselintResult(filePath: "filePath", violations: [
-                ProselintViolation(check: "typography.symbols.curly_quotes",
-                                   column: 34,
-                                   end: 784,
-                                   extent: 2,
-                                   line: 29,
+                ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
-                                   replacements: "“ or ”",
-                                   severity: .warning,
-                                   start: 782),
-                ProselintViolation(check: "typography.symbols.ellipsis",
-                                   column: 12,
-                                   end: 2276,
-                                   extent: 2,
-                                   line: 82,
+                                   severity: .warning),
+                ProselintViolation(line: 82,
                                    message: "'...' is an approximation, use the ellipsis symbol '…'.",
-                                   replacements: nil,
-                                   severity: .warning,
-                                   start: 2274),
+                                   severity: .warning),
             ]),
         ]
     }
@@ -91,24 +79,12 @@ final class ProselintExecutorTests: XCTestCase {
 
         expect(try self.executor.executeProse(files: ["filePath"])) == [
             ProselintResult(filePath: "filePath", violations: [
-                ProselintViolation(check: "typography.symbols.curly_quotes",
-                                   column: 34,
-                                   end: 784,
-                                   extent: 2,
-                                   line: 29,
+                ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
-                                   replacements: "“ or ”",
-                                   severity: .warning,
-                                   start: 782),
-                ProselintViolation(check: "typography.symbols.ellipsis",
-                                   column: 12,
-                                   end: 2276,
-                                   extent: 2,
-                                   line: 82,
+                                   severity: .warning),
+                ProselintViolation(line: 82,
                                    message: "'...' is an approximation, use the ellipsis symbol '…'.",
-                                   replacements: nil,
-                                   severity: .warning,
-                                   start: 2274),
+                                   severity: .warning),
             ]),
         ]
     }
@@ -125,24 +101,12 @@ final class ProselintExecutorTests: XCTestCase {
 
         expect(try self.executor.executeProse(files: ["file1", "file2"])) == [
             ProselintResult(filePath: "file1", violations: [
-                ProselintViolation(check: "typography.symbols.curly_quotes",
-                                   column: 34,
-                                   end: 784,
-                                   extent: 2,
-                                   line: 29,
+                ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
-                                   replacements: "“ or ”",
-                                   severity: .warning,
-                                   start: 782),
-                ProselintViolation(check: "typography.symbols.ellipsis",
-                                   column: 12,
-                                   end: 2276,
-                                   extent: 2,
-                                   line: 82,
+                                   severity: .warning),
+                ProselintViolation(line: 82,
                                    message: "'...' is an approximation, use the ellipsis symbol '…'.",
-                                   replacements: nil,
-                                   severity: .warning,
-                                   start: 2274),
+                                   severity: .warning),
             ]),
         ]
     }
