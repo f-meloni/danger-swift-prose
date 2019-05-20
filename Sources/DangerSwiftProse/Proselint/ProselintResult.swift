@@ -25,15 +25,9 @@ struct ProselintViolation: Decodable, Equatable {
         case error
     }
 
-    let check: String
-    let column: Int
-    let end: Int
-    let extent: Int
     let line: Int
     let message: String
-    let replacements: String?
     let severity: Severity
-    let start: Int
 }
 
 struct ProselintResponse: Decodable, Equatable {
