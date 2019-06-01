@@ -8,7 +8,7 @@ struct ProselintResult: Equatable, MarkdownConvertible {
         }
 
         let fileHeader = """
-        ### \(filePath)
+        ### Proselint report on \(filePath)
         | Line | Message | Severity |
         | --- | ----- | ----- |\n
         """
