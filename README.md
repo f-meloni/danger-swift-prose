@@ -63,3 +63,11 @@ Add to your Dangerfile
 ```
 MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
+### Proselint
+
+Add to your Dangerfile
+
+```
+Proselint.performSpellCheck()
+```
+
