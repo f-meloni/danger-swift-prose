@@ -40,6 +40,7 @@ public enum Mdspell {
 }
 
 public enum Proselint {
+    @available(OSX 10.12, *)
     public static func performSpellCheck(files: [String]? = nil) {
         performSpellCheck(files: files, proselintExecutor: ProselintExecutor(), dsl: Danger())
     }

@@ -3,18 +3,25 @@ import Nimble
 import TestSpy
 import XCTest
 
+@available(OSX 10.12, *)
 final class ProselintExecutorTests: XCTestCase {
     private var commandExecutor: MockedCommandExecutor!
     private var finder: StubbedProselintFinder!
     private var installer: SpyToolInstaller!
     private var executor: ProselintExecutor!
+    private var fileManager: StubbedFileManager!
 
     override func setUp() {
         super.setUp()
         commandExecutor = MockedCommandExecutor()
         finder = StubbedProselintFinder()
         installer = SpyToolInstaller()
-        executor = ProselintExecutor(commandExecutor: commandExecutor, proselintFinder: finder, installer: installer)
+        fileManager = StubbedFileManager()
+        executor = ProselintExecutor(commandExecutor: commandExecutor,
+                                     proselintFinder: finder,
+                                     installer: installer,
+                                     excludedRulesDirectoryURL: FileManager.default.temporaryDirectory,
+                                     fileManager: fileManager)
     }
 
     override func tearDown() {
@@ -22,6 +29,7 @@ final class ProselintExecutorTests: XCTestCase {
         installer = nil
         finder = nil
         executor = nil
+        fileManager = nil
         super.tearDown()
     }
 
@@ -111,6 +119,44 @@ final class ProselintExecutorTests: XCTestCase {
         ]
     }
 
+    func testGeneratesConfigurationFile() throws {
+        finder.response = "/bin/proselint"
+        commandExecutor.resultBlock = { command in
+            if command.hasSuffix("file1") {
+                return self.proselintJSON
+            } else {
+                throw MockedCommandExecutor.CommandError.error
+            }
+        }
+        fileManager.removeFile = false
+
+        let confURL = executor.excludedRulesDirectoryURL.appendingPathComponent(".proselintrc")
+        _ = try executor.executeProse(files: ["file1"], excludedRules: ["annotations.misc", "typography.symbols"])
+        let checks = try! JSONDecoder().decode(ExcludedChecks.self, from: Data(contentsOf: confURL))
+        try? FileManager.default.removeItem(at: confURL)
+
+        XCTAssertEqual(checks.checks.checkValues.keys.sorted { $0 < $1 }, ["annotations.misc", "typography.symbols"])
+        XCTAssertTrue(checks.checks.checkValues.values.allSatisfy { !$0 })
+    }
+
+    func testDeletesTheConfigurationFileAfterExecution() throws {
+        finder.response = "/bin/proselint"
+        commandExecutor.resultBlock = { command in
+            if command.hasSuffix("file1") {
+                return self.proselintJSON
+            } else {
+                throw MockedCommandExecutor.CommandError.error
+            }
+        }
+
+        _ = try executor.executeProse(files: ["file1", "file2"])
+
+        XCTAssertFalse(
+            FileManager.default
+                .fileExists(atPath: executor.excludedRulesDirectoryURL.appendingPathComponent(".proselintrc").path)
+        )
+    }
+
     private var proselintJSON: String {
         return """
         {
@@ -140,6 +186,16 @@ final class ProselintExecutorTests: XCTestCase {
             "status": "success"
         }
         """
+    }
+}
+
+private final class StubbedFileManager: FileManager {
+    var removeFile = true
+
+    override func removeItem(at URL: URL) throws {
+        if removeFile {
+            try super.removeItem(at: URL)
+        }
     }
 }
 
