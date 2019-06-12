@@ -4,4 +4,7 @@ import DangerSwiftProse
 let danger = Danger()
 
 Mdspell.performSpellCheck(files: ["README.md"], ignoredWords: [], language: "en-us")
-Proselint.performSpellCheck(files: ["README.md"])
+
+if #available(OSX 10.12, *) {
+    Proselint.performSpellCheck(files: ["README.md"], excludedRules: ["annotations.misc"])
+}

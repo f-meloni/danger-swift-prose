@@ -149,7 +149,7 @@ final class ProselintExecutorTests: XCTestCase {
             }
         }
 
-        _ = try executor.executeProse(files: ["file1", "file2"], excludedRules: [])
+        _ = try executor.executeProse(files: ["file1", "file2"], excludedRules: ["annotations.misc", "typography.symbols"])
 
         XCTAssertFalse(
             FileManager.default
