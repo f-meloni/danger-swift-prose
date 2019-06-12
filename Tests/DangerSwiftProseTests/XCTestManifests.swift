@@ -23,10 +23,13 @@ extension MdspellTests {
     ]
 }
 
+@available(OSX 10.12, *)
 extension ProselintExecutorTests {
     static let __allTests = [
+        ("testDeletesTheConfigurationFileAfterExecution", testDeletesTheConfigurationFileAfterExecution),
         ("testDoesntThrowsAnErrorIfProselintIsNotFoundButThenIsInstalled", testDoesntThrowsAnErrorIfProselintIsNotFoundButThenIsInstalled),
         ("testExcludesFilesWhereProselintCommandIsNotSuccessful", testExcludesFilesWhereProselintCommandIsNotSuccessful),
+        ("testGeneratesConfigurationFile", testGeneratesConfigurationFile),
         ("testReturnsCorrectResultsWhenProselintCommandIsSuccessful", testReturnsCorrectResultsWhenProselintCommandIsSuccessful),
         ("testSendsCorrectCommandsToCommandExecutor", testSendsCorrectCommandsToCommandExecutor),
         ("testThrowsProselintNotFoundErrorWhenProselintFinderThrowsAnError", testThrowsProselintNotFoundErrorWhenProselintFinderThrowsAnError),

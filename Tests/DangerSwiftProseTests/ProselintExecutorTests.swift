@@ -3,18 +3,25 @@ import Nimble
 import TestSpy
 import XCTest
 
+@available(OSX 10.12, *)
 final class ProselintExecutorTests: XCTestCase {
     private var commandExecutor: MockedCommandExecutor!
     private var finder: StubbedProselintFinder!
     private var installer: SpyToolInstaller!
     private var executor: ProselintExecutor!
+    private var fileManager: StubbedFileManager!
 
     override func setUp() {
         super.setUp()
         commandExecutor = MockedCommandExecutor()
         finder = StubbedProselintFinder()
         installer = SpyToolInstaller()
-        executor = ProselintExecutor(commandExecutor: commandExecutor, proselintFinder: finder, installer: installer)
+        fileManager = StubbedFileManager()
+        executor = ProselintExecutor(commandExecutor: commandExecutor,
+                                     proselintFinder: finder,
+                                     installer: installer,
+                                     excludedRulesDirectoryURL: FileManager.default.temporaryDirectory,
+                                     fileManager: fileManager)
     }
 
     override func tearDown() {
@@ -22,6 +29,7 @@ final class ProselintExecutorTests: XCTestCase {
         installer = nil
         finder = nil
         executor = nil
+        fileManager = nil
         super.tearDown()
     }
 
@@ -29,13 +37,13 @@ final class ProselintExecutorTests: XCTestCase {
         finder.response = "/bin/proselint"
         commandExecutor.resultBlock = nil
 
-        _ = try executor.executeProse(files: ["file1", "file2"])
+        _ = try executor.executeProse(files: ["file1", "file2"], excludedRules: [])
 
         expect(self.commandExecutor).to(haveReceived(.execute("proselint -j file1"), .before(.execute("proselint -j file2"))))
     }
 
     func testThrowsProselintNotFoundErrorWhenProselintFinderThrowsAnError() {
-        expect(try self.executor.executeProse(files: [])).to(throwError(closure: {
+        expect(try self.executor.executeProse(files: [], excludedRules: [])).to(throwError(closure: {
             expect($0.localizedDescription) == "Proselint is not installed"
         }))
     }
@@ -56,7 +64,7 @@ final class ProselintExecutorTests: XCTestCase {
             self.proselintJSON
         }
 
-        let result = try executor.executeProse(files: ["filePath"])
+        let result = try executor.executeProse(files: ["filePath"], excludedRules: [])
 
         expect(self.installer).to(haveReceived(.install(.proselint)))
         expect(result) == [
@@ -77,7 +85,7 @@ final class ProselintExecutorTests: XCTestCase {
             self.proselintJSON
         }
 
-        expect(try self.executor.executeProse(files: ["filePath"])) == [
+        expect(try self.executor.executeProse(files: ["filePath"], excludedRules: [])) == [
             ProselintResult(filePath: "filePath", violations: [
                 ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
@@ -99,7 +107,7 @@ final class ProselintExecutorTests: XCTestCase {
             }
         }
 
-        expect(try self.executor.executeProse(files: ["file1", "file2"])) == [
+        expect(try self.executor.executeProse(files: ["file1", "file2"], excludedRules: [])) == [
             ProselintResult(filePath: "file1", violations: [
                 ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
@@ -109,6 +117,44 @@ final class ProselintExecutorTests: XCTestCase {
                                    severity: .warning),
             ]),
         ]
+    }
+
+    func testGeneratesConfigurationFile() throws {
+        finder.response = "/bin/proselint"
+        commandExecutor.resultBlock = { command in
+            if command.hasSuffix("file1") {
+                return self.proselintJSON
+            } else {
+                throw MockedCommandExecutor.CommandError.error
+            }
+        }
+        fileManager.removeFile = false
+
+        let confURL = executor.excludedRulesDirectoryURL.appendingPathComponent(".proselintrc")
+        _ = try executor.executeProse(files: ["file1"], excludedRules: ["annotations.misc", "typography.symbols"])
+        let checks = try! JSONDecoder().decode(ExcludedChecks.self, from: Data(contentsOf: confURL))
+        try? FileManager.default.removeItem(at: confURL)
+
+        XCTAssertEqual(checks.checks.checkValues.keys.sorted { $0 < $1 }, ["annotations.misc", "typography.symbols"])
+        XCTAssertTrue(checks.checks.checkValues.values.allSatisfy { !$0 })
+    }
+
+    func testDeletesTheConfigurationFileAfterExecution() throws {
+        finder.response = "/bin/proselint"
+        commandExecutor.resultBlock = { command in
+            if command.hasSuffix("file1") {
+                return self.proselintJSON
+            } else {
+                throw MockedCommandExecutor.CommandError.error
+            }
+        }
+
+        _ = try executor.executeProse(files: ["file1", "file2"], excludedRules: ["annotations.misc", "typography.symbols"])
+
+        XCTAssertFalse(
+            FileManager.default
+                .fileExists(atPath: executor.excludedRulesDirectoryURL.appendingPathComponent(".proselintrc").path)
+        )
     }
 
     private var proselintJSON: String {
@@ -140,6 +186,16 @@ final class ProselintExecutorTests: XCTestCase {
             "status": "success"
         }
         """
+    }
+}
+
+private final class StubbedFileManager: FileManager {
+    var removeFile = true
+
+    override func removeItem(at URL: URL) throws {
+        if removeFile {
+            try super.removeItem(at: URL)
+        }
     }
 }
 
