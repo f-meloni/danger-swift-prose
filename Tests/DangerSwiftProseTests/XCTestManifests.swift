@@ -23,6 +23,7 @@ extension MdspellTests {
     ]
 }
 
+@available(OSX 10.12, *)
 extension ProselintExecutorTests {
     static let __allTests = [
         ("testDeletesTheConfigurationFileAfterExecution", testDeletesTheConfigurationFileAfterExecution),

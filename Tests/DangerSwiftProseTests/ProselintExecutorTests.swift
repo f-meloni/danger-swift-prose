@@ -37,13 +37,13 @@ final class ProselintExecutorTests: XCTestCase {
         finder.response = "/bin/proselint"
         commandExecutor.resultBlock = nil
 
-        _ = try executor.executeProse(files: ["file1", "file2"])
+        _ = try executor.executeProse(files: ["file1", "file2"], excludedRules: [])
 
         expect(self.commandExecutor).to(haveReceived(.execute("proselint -j file1"), .before(.execute("proselint -j file2"))))
     }
 
     func testThrowsProselintNotFoundErrorWhenProselintFinderThrowsAnError() {
-        expect(try self.executor.executeProse(files: [])).to(throwError(closure: {
+        expect(try self.executor.executeProse(files: [], excludedRules: [])).to(throwError(closure: {
             expect($0.localizedDescription) == "Proselint is not installed"
         }))
     }
@@ -64,7 +64,7 @@ final class ProselintExecutorTests: XCTestCase {
             self.proselintJSON
         }
 
-        let result = try executor.executeProse(files: ["filePath"])
+        let result = try executor.executeProse(files: ["filePath"], excludedRules: [])
 
         expect(self.installer).to(haveReceived(.install(.proselint)))
         expect(result) == [
@@ -85,7 +85,7 @@ final class ProselintExecutorTests: XCTestCase {
             self.proselintJSON
         }
 
-        expect(try self.executor.executeProse(files: ["filePath"])) == [
+        expect(try self.executor.executeProse(files: ["filePath"], excludedRules: [])) == [
             ProselintResult(filePath: "filePath", violations: [
                 ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
@@ -107,7 +107,7 @@ final class ProselintExecutorTests: XCTestCase {
             }
         }
 
-        expect(try self.executor.executeProse(files: ["file1", "file2"])) == [
+        expect(try self.executor.executeProse(files: ["file1", "file2"], excludedRules: [])) == [
             ProselintResult(filePath: "file1", violations: [
                 ProselintViolation(line: 29,
                                    message: "Use curly quotes “”, not straight quotes \"\". Found once elsewhere.",
@@ -149,7 +149,7 @@ final class ProselintExecutorTests: XCTestCase {
             }
         }
 
-        _ = try executor.executeProse(files: ["file1", "file2"])
+        _ = try executor.executeProse(files: ["file1", "file2"], excludedRules: [])
 
         XCTAssertFalse(
             FileManager.default

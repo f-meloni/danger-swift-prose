@@ -41,11 +41,12 @@ public enum Mdspell {
 
 public enum Proselint {
     @available(OSX 10.12, *)
-    public static func performSpellCheck(files: [String]? = nil) {
-        performSpellCheck(files: files, proselintExecutor: ProselintExecutor(), dsl: Danger())
+    public static func performSpellCheck(files: [String]? = nil, excludedRules: [String] = []) {
+        performSpellCheck(files: files, excludedRules: excludedRules, proselintExecutor: ProselintExecutor(), dsl: Danger())
     }
 
     static func performSpellCheck(files: [String]?,
+                                  excludedRules: [String],
                                   proselintExecutor: ProselintExecuting,
                                   dsl: DangerDSL) {
         let spellCheckFiles: [String]
@@ -57,7 +58,7 @@ public enum Proselint {
         }
 
         do {
-            let proselintResults = try proselintExecutor.executeProse(files: spellCheckFiles)
+            let proselintResults = try proselintExecutor.executeProse(files: spellCheckFiles, excludedRules: excludedRules)
 
             if let markdown = proselintResults.toMarkdown() {
                 dsl.markdown(markdown)

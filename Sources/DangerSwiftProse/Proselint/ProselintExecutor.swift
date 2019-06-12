@@ -1,7 +1,7 @@
 import Foundation
 
 protocol ProselintExecuting {
-    func executeProse(files: [String]) throws -> [ProselintResult]
+    func executeProse(files: [String], excludedRules: [String]) throws -> [ProselintResult]
 }
 
 struct ProselintExecutor: ProselintExecuting {
@@ -33,10 +33,6 @@ struct ProselintExecutor: ProselintExecuting {
         self.installer = installer
         self.excludedRulesDirectoryURL = excludedRulesDirectoryURL
         self.fileManager = fileManager
-    }
-
-    func executeProse(files: [String]) throws -> [ProselintResult] {
-        return try executeProse(files: files, excludedRules: ["annotations.misc", "typography.symbols"])
     }
 
     func executeProse(files: [String], excludedRules: [String]) throws -> [ProselintResult] {
