@@ -2,8 +2,6 @@
 
 Danger plugin to validate Markdown files
 
-This plugin uses the orta's fork of [mdspell](https://github.com/orta/node-markdown-spellcheck)
-
 ## Getting Started
 
 ### Install DangerSwiftCoverage
@@ -49,7 +47,7 @@ This prevents the dev dependencies to be downloaded and compiled with your frame
 - Add this to your `Dangerfile.swift`
 
 ```swift
-import DangerSwiftProse // package: https://github.com/f-meloni/DangerSwiftProse
+import DangerSwiftProse // package: https://github.com/f-meloni/danger-swift-prose.git
 
 MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
@@ -59,6 +57,7 @@ MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ### Mdspell
 
 Add to your Dangerfile
+This uses the orta's fork of [mdspell](https://github.com/orta/node-markdown-spellcheck)
 
 ```
 MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
