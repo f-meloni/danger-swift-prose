@@ -31,10 +31,7 @@ let package = Package(
             name: "DangerSwiftProse",
             dependencies: ["Danger"]
         ),
-        .testTarget(
-            name: "DangerSwiftProseTests",
-            dependencies: ["DangerSwiftProse", "Nimble", "TestSpy", "DangerFixtures"]
-        ),
+        .testTarget(name: "DangerSwiftProseTests", dependencies: ["DangerSwiftProse", "Nimble", "TestSpy", "DangerFixtures"]), // dev
     ]
 )
 
