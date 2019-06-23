@@ -47,7 +47,7 @@ This prevents the dev dependencies to be downloaded and compiled with your frame
 - Add this to your `Dangerfile.swift`
 
 ```swift
-import DangerSwiftProse // package: https://github.com/f-meloni/DangerSwiftProse
+import DangerSwiftProse // package: https://github.com/f-meloni/danger-swift-prose.git
 
 MdspellCheck.performSpellCheck(ignoredWords: [], language: "en-us")
 ```
