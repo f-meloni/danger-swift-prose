@@ -19,8 +19,8 @@ let package = Package(
         .package(url: "https://github.com/danger/swift.git", from: "2.0.0"),
         .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"), // dev
         .package(url: "https://github.com/f-meloni/TestSpy", from: "0.3.1"), // dev
-        .package(url: "https://github.com/orta/Komondor", from: "1.0.2"), // dev
-        .package(url: "https://github.com/orta/PackageConfig", .exact("0.0.1")), // dev
+        .package(url: "https://github.com/shibapm/Komondor", from: "1.0.2"), // dev
+        .package(url: "https://github.com/shibapm/PackageConfig", from: "0.10.0"), // dev
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.35.8"), // dev
         .package(url: "https://github.com/f-meloni/Rocket", from: "0.8.1"), // dev
     ],
@@ -38,7 +38,7 @@ let package = Package(
 #if canImport(PackageConfig)
     import PackageConfig
 
-    let config = PackageConfig([
+    let config = PackageConfiguration([
         "komondor": [
             "pre-commit": [
                 "swift run swiftformat .",
@@ -50,5 +50,5 @@ let package = Package(
                 "push",
             ],
         ],
-    ])
+    ]).write()
 #endif
