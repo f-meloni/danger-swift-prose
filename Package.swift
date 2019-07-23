@@ -16,7 +16,7 @@ let package = Package(
                  targets: ["DangerSwiftProse"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/danger/swift.git", from: "1.0.0"),
+        .package(url: "https://github.com/danger/swift.git", from: "2.0.0"),
         .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"), // dev
         .package(url: "https://github.com/f-meloni/TestSpy", from: "0.3.1"), // dev
         .package(url: "https://github.com/orta/Komondor", from: "1.0.2"), // dev
