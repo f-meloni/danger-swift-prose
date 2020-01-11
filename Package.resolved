@@ -20,12 +20,21 @@
         }
       },
       {
+        "package": "Logger",
+        "repositoryURL": "https://github.com/shibapm/Logger",
+        "state": {
+          "branch": null,
+          "revision": "53c3ecca5abe8cf46697e33901ee774236d94cce",
+          "version": "0.2.3"
+        }
+      },
+      {
         "package": "Marathon",
         "repositoryURL": "https://github.com/JohnSundell/Marathon",
         "state": {
           "branch": null,
-          "revision": "582505bbd8e782c7d8812f4c6d356ad19d5222a8",
-          "version": "3.2.0"
+          "revision": "35b672e05ac411fb104e462fbfd6541f995abc17",
+          "version": "3.3.0"
         }
       },
       {
@@ -42,8 +51,8 @@
         "repositoryURL": "https://github.com/nerdishbynature/octokit.swift",
         "state": {
           "branch": null,
-          "revision": "b63f2ec1b55f26c8e94159d81ad695aeb92f3d4e",
-          "version": "0.9.0"
+          "revision": "9ad4d6eff94ad1d9873d3b410a47c663c820d4bd",
+          "version": "0.10.0"
         }
       },
       {
@@ -51,8 +60,8 @@
         "repositoryURL": "https://github.com/shibapm/PackageConfig",
         "state": {
           "branch": null,
-          "revision": "912c12f0eb33577124e7bf16e51830ae0af49962",
-          "version": "0.10.0"
+          "revision": "fd0829aac9851434b3d2db0890e27bc489fc973a",
+          "version": "0.12.2"
         }
       },
       {
@@ -78,8 +87,8 @@
         "repositoryURL": "https://github.com/nerdishbynature/RequestKit.git",
         "state": {
           "branch": null,
-          "revision": "defcc7cb005995f261b47e357874a539f3b5c679",
-          "version": "2.3.0"
+          "revision": "fd5e9e99aada7432170366c9e95967011ce13bad",
+          "version": "2.4.0"
         }
       },
       {
@@ -96,8 +105,8 @@
         "repositoryURL": "https://github.com/f-meloni/Rocket",
         "state": {
           "branch": null,
-          "revision": "ee237eaefc0a8c13186b4fb27d1b7b3355dead18",
-          "version": "0.9.0"
+          "revision": "623cb4ccf55d708d082516ccd5cfea3dac8f9032",
+          "version": "1.0.0"
         }
       },
       {
@@ -105,8 +114,8 @@
         "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
         "state": {
           "branch": null,
-          "revision": "d3d54ce662dfee7fef619330b71d251b8d4869f9",
-          "version": "2.2.0"
+          "revision": "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
+          "version": "2.3.0"
         }
       },
       {
@@ -114,8 +123,8 @@
         "repositoryURL": "https://github.com/danger/swift.git",
         "state": {
           "branch": null,
-          "revision": "00ab2984490b706cf0763a14f90c52555a23eb92",
-          "version": "2.0.0"
+          "revision": "74b552511bee69051ec23347177d1e5ab6e2510a",
+          "version": "2.0.7"
         }
       },
       {
@@ -123,8 +132,8 @@
         "repositoryURL": "https://github.com/nicklockwood/SwiftFormat",
         "state": {
           "branch": null,
-          "revision": "0708f1eefe0a2ce2aa42fc3ff86125cdb751e63c",
-          "version": "0.40.10"
+          "revision": "d9b7cf39e06e89428004a767d97006fb6d293c53",
+          "version": "0.43.5"
         }
       },
       {
@@ -132,8 +141,8 @@
         "repositoryURL": "https://github.com/kareman/SwiftShell",
         "state": {
           "branch": null,
-          "revision": "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
-          "version": "4.1.2"
+          "revision": "fb7fc2c9ad8811caf324431a508fb79e3fb74f99",
+          "version": "5.0.1"
         }
       },
       {
@@ -150,8 +159,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams",
         "state": {
           "branch": null,
-          "revision": "b08dba4bcea978bf1ad37703a384097d3efce5af",
-          "version": "1.0.2"
+          "revision": "c947a306d2e80ecb2c0859047b35c73b8e1ca27f",
+          "version": "2.0.0"
         }
       }
     ]
