@@ -10,6 +10,6 @@ struct ProselintFinder: ProselintFinding {
     }
 
     func findProselint() throws -> String {
-        return try executor.spawn(command: "which proselint")
+        try executor.spawn(command: "which proselint")
     }
 }

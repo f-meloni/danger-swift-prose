@@ -51,7 +51,7 @@ final class MdspellCheckExecutorTests: XCTestCase {
     }
 
     private func executeSpellCheck() throws -> [MdspellCheckResult] {
-        return try checkExecutor.executeSpellCheck(onFiles: [
+        try checkExecutor.executeSpellCheck(onFiles: [
             "file1",
             "file2",
             "file3",
@@ -60,10 +60,10 @@ final class MdspellCheckExecutorTests: XCTestCase {
             "word2",
             "word3",
         ],
-                                                   language: "en-us",
-                                                   mdspellFinder: finder,
-                                                   commandExecutor: commandExecutor,
-                                                   installer: installer)
+                                            language: "en-us",
+                                            mdspellFinder: finder,
+                                            commandExecutor: commandExecutor,
+                                            installer: installer)
     }
 }
 
@@ -71,6 +71,6 @@ private final class MockedMdspellFinder: MdspellFinding {
     var result: String? = "/usr/bin/mdspell"
 
     func findMdspell(commandExecutor _: CommandExecuting) -> String? {
-        return result
+        result
     }
 }

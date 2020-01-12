@@ -60,7 +60,7 @@ extension ToolInstallerTests {
 
 #if !os(macOS)
     public func __allTests() -> [XCTestCaseEntry] {
-        return [
+        [
             testCase(MdspellCheckExecutorTests.__allTests),
             testCase(MdspellFinderTests.__allTests),
             testCase(MdspellTests.__allTests),

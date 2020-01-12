@@ -63,7 +63,7 @@ private final class MockedProselintExecutor: ProselintExecuting {
         case error
 
         var errorDescription: String? {
-            return "test message"
+            "test message"
         }
     }
 

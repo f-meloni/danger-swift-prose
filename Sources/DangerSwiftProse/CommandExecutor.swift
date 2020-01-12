@@ -25,11 +25,11 @@ struct CommandExecutor: CommandExecuting {
 
     @discardableResult
     func execute(command: String) -> String {
-        return danger.utils.exec(command)
+        danger.utils.exec(command)
     }
 
     @discardableResult
     func spawn(command: String) throws -> String {
-        return try danger.utils.spawn(command)
+        try danger.utils.spawn(command)
     }
 }
