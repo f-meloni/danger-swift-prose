@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/danger/swift.git", from: "3.0.0"),
-        .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"), // dev
+        .package(url: "https://github.com/Quick/Nimble", from: "8.0.0"), // dev
         .package(url: "https://github.com/f-meloni/TestSpy", from: "0.3.1"), // dev
         .package(url: "https://github.com/shibapm/Komondor", from: "1.0.2"), // dev
         .package(url: "https://github.com/shibapm/PackageConfig", from: "0.10.0"), // dev
