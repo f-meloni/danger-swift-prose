@@ -107,7 +107,7 @@ private final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
         case fakeError
 
         var errorDescription: String? {
-            return "test error"
+            "test error"
         }
     }
 
@@ -166,7 +166,7 @@ private final class MockedMdspellCheckExecutor: MdspellCheckExecuting, TestSpy {
 }
 
 private var readme1Content: String {
-    return """
+    """
     <p align="center">
     <img src="https://danger.systems/images/js/danger-js-sw-logo-hero-cachable@2x.png" width=350 /></br>
     Formalize your Pull Request etiquette.

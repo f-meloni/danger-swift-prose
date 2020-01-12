@@ -10,7 +10,7 @@ struct MdspellCheckResult: MarkdownConvertible {
     }
 
     func violations() -> [MdspellCheckViolation] {
-        return checkResult.split(separator: "\n").compactMap {
+        checkResult.split(separator: "\n").compactMap {
             let splittedLine = $0.split(separator: "|")
 
             guard splittedLine.count == 2 else {
@@ -52,7 +52,7 @@ struct MdspellCheckResult: MarkdownConvertible {
 
 extension MdspellCheckResult: Equatable {
     static func == (lhs: MdspellCheckResult, rhs: MdspellCheckResult) -> Bool {
-        return lhs.file == rhs.file &&
+        lhs.file == rhs.file &&
             lhs.checkResult == rhs.checkResult
     }
 }

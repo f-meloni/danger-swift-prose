@@ -13,18 +13,18 @@ struct MdspellCheckExecutor: MdspellCheckExecuting {
         case mdspellNotFound
 
         var errorDescription: String? {
-            return "mdspell is not installed"
+            "mdspell is not installed"
         }
     }
 
     func executeSpellCheck(onFiles files: [String],
                            ignoredWords: [String],
                            language: String) throws -> [MdspellCheckResult] {
-        return try executeSpellCheck(onFiles: files,
-                                     ignoredWords: ignoredWords,
-                                     language: language,
-                                     mdspellFinder: MdSpellFinder(),
-                                     commandExecutor: CommandExecutor())
+        try executeSpellCheck(onFiles: files,
+                              ignoredWords: ignoredWords,
+                              language: language,
+                              mdspellFinder: MdSpellFinder(),
+                              commandExecutor: CommandExecutor())
     }
 
     func executeSpellCheck(onFiles files: [String],

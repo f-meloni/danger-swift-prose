@@ -158,7 +158,7 @@ final class ProselintExecutorTests: XCTestCase {
     }
 
     private var proselintJSON: String {
-        return """
+        """
         {
             "data": {
                 "errors": [{
@@ -214,6 +214,6 @@ private final class StubbedProselintFinder: ProselintFinding {
     }
 
     func findProselint() throws -> String {
-        return try responseBlock()
+        try responseBlock()
     }
 }
